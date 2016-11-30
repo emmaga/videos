@@ -1,0 +1,38 @@
+<div ng-controller="editedListController as editedList" ng-init="editedList.init()" class="col-sm-9 page col-right">
+    <a>
+        <strong>
+            <i class="glyphicon glyphicon-film"></i>
+            已入库
+        </strong>
+    </a>
+    <hr>
+    <input /><button>搜索</button> <br>
+    分类 <input type="checkbox">恐怖 <input type="checkbox">爱情<br>
+    产地 <input type="checkbox">中国 <input type="checkbox">韩国
+    <hr class="break-space">
+    <table class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>类型</th>
+                <th>产地</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-copy="10">
+                <td>星际迷航</td>
+                <td>爱情；科幻</td>
+                <td>韩国</td>
+                <td>
+                    <button ng-click="editedList.edit()" class="btn btn-xs btn-default" title="编辑">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                    <button class="btn btn-xs btn-default" title="删除">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

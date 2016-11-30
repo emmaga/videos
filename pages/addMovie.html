@@ -1,0 +1,39 @@
+<!--fix my css-->
+<div style="position: absolute; top: 0; z-index: 1000; overflow: auto; height: 100%;" ng-controller="addMovieController as addMovie" ng-init="addMovie.init()">
+    
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="addMovie.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">编辑信息</h4>
+            </div>
+            <form>
+                <div class="modal-body">
+                    
+                        
+                    <div class="form-group">
+                        <a class=" pull-right">
+                            <p>上传电影</p>
+                        </a>
+                        <hr class="break-space">
+                        <input type="file" class="hide">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <a class=" pull-right">
+                            <p>上传字幕</p>
+                        </a>
+                        <hr class="break-space">
+                        <input type="file" class="hide">
+                    </div>
+                    <hr>
+                    
+                </div>
+                <div class="modal-footer">
+                    <a ng-click="addMovie.cancel()" class="btn">取消</a>
+                    <button class="btn btn-primary" type="submit">保存修改</button>
+                </div>
+            </form>  
+        </div>
+    </div>
+</div>

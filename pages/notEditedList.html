@@ -1,0 +1,36 @@
+<div ng-controller="notEditedListController as notEditedList" ng-init="notEditedList.init()" class="col-sm-9 page col-right">
+    <a>
+        <strong>
+            <i class="glyphicon glyphicon-import"></i>
+            待入库
+        </strong>
+    </a>
+    <hr>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-refresh"></i> 刷新列表</button>
+    </div>
+    <hr class="break-space">
+    <table class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>大小</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-copy="10">
+                <td>星际迷航</td>
+                <td>1.1G</td>
+                <td>
+                    <button ng-click="notEditedList.add()" class="btn btn-xs btn-default" data-toggle="modal" title="入库" data-target="#film-edit">
+                        <i class="glyphicon glyphicon-film"></i>
+                    </button>
+                    <button class="btn btn-xs btn-default" title="删除">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,66 @@
+<div ng-controller="uploadListController as uploadList" ng-init="uploadList.init()" class="col-sm-9 page col-right">
+    <a>
+        <strong>
+            <i class="glyphicon glyphicon-upload"></i>
+            上传模块
+         </strong>
+    </a>
+    <hr>
+    <div class="btn-group">
+        <button ng-click="uploadList.add()" type="button" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-plus"></i> 添加上传任务</button>
+    </div>
+    <hr class="break-space">
+    <table class="table table-hover table-condensed width-progress ">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>大小</th>
+                <th>进度</th>
+                <th>速度</th>
+                <th>剩余</th>
+                <th>字幕</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-copy="2">
+                <td>星际迷航</td>
+                <td>1.1G</td>
+                <td>
+                    <div class="progress in-table">
+                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 40%;min-width: 2em;">
+                            <span class="">40%</span>
+                        </div>
+                    </div>
+                </td>
+                <td>300kb/s</td>
+                <td>0.6G</td>
+                <td>无／上传中／已上传／上传失败</td>
+                <td>
+                    <button class="btn btn-xs btn-default" title="删除">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>星际迷航</td>
+                <td>1.1G</td>
+                <td>
+                    <div class="progress in-table">
+                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;min-width: 2em;">
+                            <span class="">失败</span>
+                        </div>
+                    </div>
+                </td>
+                <td>-</td>
+                <td>-</td>
+                <td>无／上传中／已上传／上传失败</td>
+                <td>
+                    <button class="btn btn-xs btn-default" title="删除">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

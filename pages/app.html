@@ -1,0 +1,55 @@
+<div ng-controller="appController as app" ng-init="app.init()">
+    
+    <!--头部-->
+    <div id="top-nav" class="navbar navbar-inverse navbar-static-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand">videos</a>
+                <a ng-click="app.logout()">log out</a>
+            </div>
+        </div>
+    </div>
+    <!--头部-->
+    
+    <!--body-->
+    <div class="container-fluid">
+        <div class="row">
+            <!--左侧导航栏-->
+            <div class="col-sm-3 col-left">
+                <a ng-click="app.gotoPage('uploadList')" class="font-bold no-underline cursor-default">
+                    <i class="glyphicon glyphicon-upload"></i>&nbsp&nbsp上传
+                </a>
+                <hr>
+                <a ng-click="app.gotoPage('app.transcodingList')" class="font-bold no-underline cursor-default">
+                    <i class="glyphicon glyphicon-random" style="font-size:14px"></i>&nbsp&nbsp转码
+                </a>
+                <hr>
+                <a ng-click="app.gotoPage('app.notEditedList')" class="font-bold no-underline cursor-default">
+                    <i class="glyphicon glyphicon-import" style="font-size:14px"></i>&nbsp&nbsp待入库
+                </a>
+                <hr>
+                <a ng-click="app.gotoPage('app.editedList')" class="font-bold no-underline cursor-default">
+                    <i class="glyphicon glyphicon-film"></i>&nbsp&nbsp已入库
+                </a>
+                <hr>
+            </div>
+            <!--左侧导航栏-->
+            
+            <!--pages-->
+            <div ng-show="app.showUploadList" ng-include="app.uploadListUrl" class="autoscroll"></div>
+            <ui-view ng-show="!app.showUploadList"></ui-view>
+            <!--pages-->
+
+        </div>
+    </div>    
+    <!--body-->  
+
+    <!--弹窗-->
+    <div ng-include="app.maskUrl" class="autoscroll"></div>
+    <!--弹窗-->
+</div>
