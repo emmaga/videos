@@ -9,7 +9,6 @@
             </div>
             <form>
                 <div class="modal-body">
-                    
                         <div class="form-group">
                             <label>名称</label>
                             <input type="text" class="form-control" value="星际迷航">
@@ -17,11 +16,14 @@
                         <hr>
                         <div class="form-group">
                             <label>类型</label>
-                            <input type="checkbox">恐怖 <input type="checkbox">爱情
+                            <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
+                            <span ng-repeat="category in addMovieInfo.categoryList track by $index"><input type="checkbox" ng-model="addMovieInfo.chooseCateory" ng-value="category.ID">{{category.CategoryName['zh-CN']}}</span>
+                            {{addMovieInfo.categoryList}}
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>产地</label>
+                            <div ng-show="addMovieInfo.noLocationData">查无数据</div>
                             <input type="checkbox">中国 <input type="checkbox">韩国
                         </div>
                         <hr>

@@ -14,19 +14,22 @@
                 <th>操作</th>
             </tr>
         </thead>
+        <div ng-show="notEditedList.loading">loading....</div>
         <tbody>
-            <tr data-copy="10">
-                <td>星际迷航</td>
-                <td>1.1G</td>
+            <tr data-copy="10" ng-repeat="task in notEditedList.taskList track by $index">
+                <td>{{task.FileOrigName}}</td>
+                <td>{{task.Size}}</td>
                 <td>
-                    <button ng-click="notEditedList.add()" class="btn btn-xs btn-default" data-toggle="modal" title="入库" data-target="#film-edit">
+                    <button ng-click="notEditedList.add(task)" class="btn btn-xs btn-default" data-toggle="modal" title="入库" data-target="#film-edit">
                         <i class="glyphicon glyphicon-film"></i>
                     </button>
-                    <button class="btn btn-xs btn-default" title="删除">
+                    <!-- 删除功能 先不做 -->
+                    <!-- <button class="btn btn-xs btn-default" title="删除">
                         <i class="glyphicon glyphicon-remove"></i>
-                    </button>
+                    </button> -->
                 </td>
             </tr>
         </tbody>
+        <div ng-show="notEditedList.noData">查无数据</div>
     </table>
 </div>
