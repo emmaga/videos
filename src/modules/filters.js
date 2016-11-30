@@ -21,4 +21,20 @@
     };
   })
 
+  .filter("subtitlePercentComplete", function() {
+    return function(subtitlePercentComplete) {
+      if(subtitlePercentComplete) {
+        if(subtitlePercentComplete == '失败') {
+          return subtitlePercentComplete;
+        }
+        else {
+          return subtitlePercentComplete + '%';
+        }
+      }
+      else {
+        return '无'
+      }
+    }
+  })
+
 })();

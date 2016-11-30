@@ -7,24 +7,20 @@
                 <button ng-click="addMovie.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">编辑信息</h4>
             </div>
-            <form>
+            <form name="addMovieForm" ng-submit="addMovieForm.$valid && addMovie.add()">
                 <div class="modal-body">
                     
                         
                     <div class="form-group">
-                        <a class=" pull-right">
-                            <p>上传电影</p>
-                        </a>
+                        上传电影
+                        <input type="file" file-model="myFileMovie" data-e="none" required>
                         <hr class="break-space">
-                        <input type="file" class="hide">
                     </div>
                     <hr>
                     <div class="form-group">
-                        <a class=" pull-right">
-                            <p>上传字幕</p>
-                        </a>
+                        上传字幕
+                        <input type="file" file-model="myFileSubtitle" data-e="none">
                         <hr class="break-space">
-                        <input type="file" class="hide">
                     </div>
                     <hr>
                     

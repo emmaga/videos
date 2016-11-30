@@ -15,8 +15,10 @@
                   scope.$apply(function(){
                       modelSetter(scope, element[0].files[0]);
                   });
-                  console&&console.log('click ' + attrs.e);
-                  document.getElementById(attrs.e).click();
+                  if(attrs.e != 'none') {
+                    // 自动点击id为该名称的按钮
+                    document.getElementById(attrs.e).click();
+                  }
               });
           }
       };
