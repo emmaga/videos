@@ -108,7 +108,7 @@
 
                     xhr.onreadystatechange = function(response) {
                         if (xhr.readyState == 4 && xhr.status == 200 && xhr.responseText != "") {
-                            console.log(xhr.responseText);
+                            console.log(JSON.parse(xhr.responseText));
                             if(JSON.parse(xhr.responseText).result !== 0) {
                               failFn(xhr);
                             }

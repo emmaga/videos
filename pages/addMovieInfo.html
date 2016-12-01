@@ -7,85 +7,96 @@
                 <button ng-click="addMovieInfo.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                 <h4 class="modal-title">编辑信息</h4>
             </div>
-            <form>
+            <form name="movieForm" novalidate ng-submit="movieForm.$valid && addMovieInfo.addMovie()">
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label>名称</label>
-                            <input type="text" class="form-control" value="星际迷航">
+                        <div class="form-group" >
+                            <span ng-repeat="lang in addMovieInfo.editLangs track by $index">
+                                <label>名称-{{lang.name}}</label>
+                                <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Name[lang.code]" value="星际迷航">
+                            </span>
+                            
                         </div>
+                   
                         <hr>
                         <div class="form-group">
                             <label>类型</label>
                             <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
-                            <span ng-repeat="category in addMovieInfo.categoryList track by $index"><input type="checkbox" ng-model="addMovieInfo.chooseCateory" ng-value="category.ID">{{category.CategoryName['zh-CN']}}</span>
-                            {{addMovieInfo.categoryList}}
+                            <span ng-repeat="category in addMovieInfo.categoryList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="addMovieInfo.chooseCateory(category.ID,this.value)">{{category.CategoryName[addMovieInfo.defaultLang]}}</span>
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>产地</label>
                             <div ng-show="addMovieInfo.noLocationData">查无数据</div>
-                            <input type="checkbox">中国 <input type="checkbox">韩国
+                            <span ng-repeat="location in addMovieInfo.locationList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="addMovieInfo.chooseLocation(location.ID,this.value)">{{location.LocationName[addMovieInfo.defaultLang]}}</span>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label>封面</label>
-                            <a class=" pull-right">
-                                <p>上传</p>
-                            </a>
+                            <label>封面</label><br>
+                               <input type="file" file-model="myCoverImg" data-e="none" required><br>
+                               <div ng-repeat="img in addMovieInfo.uploadList.data">
+                                <img src="{{img.img.src}}">
+                                上传进度：{{img.img.percentComplete}}  
+                               </div>
+                               {{addMovieInfo.uploadList.data[0].img.src}}
                             <hr class="break-space">
-                            <div>
-                                <img class="img-responsive center-block" src="api/poster1.jpg">
-                                <h6 class="text-center">IMG_001.jpg</h6>
-                            </div>
-                            <input type="file" class="hide">
+                            <div ng-click="addMovieInfo.addCoverImg()" class="btn btn-primary">保存</div>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label>简介</label>
-                            <textarea style="height: 150px;" type="text" class="form-control">《星际迷航》（Star Trek，又译作《星际旅行》等）是由美国派拉蒙影视制作的科幻影视系列。由5部电视剧、1部动画片、12部电影组成。该系列最初由编剧吉恩·罗登贝瑞（Gene Roddenberry）于20世纪60年代提出，经过近40年的不断发展而逐步完善，成为全世界最著名的科幻影视系列之一。</textarea>
+                        <span ng-repeat="lang in addMovieInfo.editLangs track by $index">
+                            <label>简介-{{lang.name}}</label>
+                        
+                            <textarea style="height: 150px;" type="text" ng-model="addMovieInfo.movieInfo.Introduce[lang.code]" class="form-control"></textarea>
+                        </span>
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>价格</label>
-                            <input type="number" class="form-control">
+                            <input type="number" class="form-control" ng-model="addMovieInfo.movieInfo.Price">
                         </div>
                         <hr>
                         <label>影片大小</label>
-                        <h5>1G</h5>
+                        <h5>{{addMovieInfo.maskParams.MovieSize}}</h5>
                         <hr>
                         <div class="form-group">
                             <label>上映年份</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Year">
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label>导演</label>
-                            <input type="text" class="form-control">
+                            <span ng-repeat="lang in addMovieInfo.editLangs track by $index">
+                                <label>导演-{{lang.name}}</label>
+                                <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Director[lang.code]" value="星际迷航">
+                            </span>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label>演员</label>
-                            <input type="text" class="form-control">
+                            <span ng-repeat="lang in addMovieInfo.editLangs track by $index">
+                                <label>演员-{{lang.name}}</label>
+                                <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Actor[lang.code]" value="星际迷航">
+                            </span>
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>排序</label>
-                            <input type="number" class="form-control">
+                            <input type="number" class="form-control" ng-model="addMovieInfo.movieInfo.Seq">
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>首字母（拼音大写缩写）</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.SearchName">
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>评分（总分10分，精确到一位小数，例如：9.7）</label>
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Score">
                         </div>
                 </div>
                 <div class="modal-footer">
                     <a ng-click="addMovieInfo.cancel()" class="btn">取消</a>
-                    <button class="btn btn-primary" type="submit">保存修改</button>
+                    <button class="btn btn-primary" type="submit" ng-disabled="movieForm.$invalid">保存修改</button>
+                    movieForm.$invalid {{movieForm.$invalid}} <br>
+                    movieForm.$valid {{movieForm.$valid}}
                 </div>
             </form>  
         </div>
