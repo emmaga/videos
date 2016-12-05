@@ -578,9 +578,6 @@
 
 
             self.add = function() {
-                debugger;
-                console.log($scope.myFileMovie)
-                console.log(self.myFileMovie)
                 $scope.app.uploadList.uploadFile($scope.myFileMovie, $scope.myFileSubtitle, $scope.app.uploadList);
                 $scope.app.maskUrl = "";
             }
@@ -597,7 +594,6 @@
                 self.defaultLang = util.getDefaultLangCode();
 
                 self.maskParams = $scope.app.maskParams;
-                console.log(self.maskParams)
                 // 电影分类 初始化 数组 电影产地 初始化 数组
                 self.catrgoryArr = []; 
                 self.LocationArr = []; 
@@ -768,12 +764,18 @@
 
             // 添加电影入库
             self.addMovie = function () {
-                // console.log(self.uploadList.data)
-                // 图片必填
-                // if (self.uploadList.data == []) {
-                //     alert('请上传图片');
-                //     return;
-                // }
+                if (self.catrgoryArr.length == 0) {
+                    alert('请选择类型');
+                    return;
+                }
+                if (self.LocationArr.length == 0) {
+                    alert('请选择产地');
+                    return;
+                }
+                if (self.uploadList.data.length == 0) {
+                    alert('请上传图片');
+                    return;
+                }
                 self.saving = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
@@ -947,36 +949,7 @@
                 }
             }
 
-            // // 编辑 电影的 信息
-            // self.editMovieInfo = function () {
-            //     self.loading = true;
-            //     var data = JSON.stringify({
-            //         "token": util.getParams('token'),
-            //         "action": "getMovieInfoByID",
-            //         "movieID":self.maskParams.movieID
-            //     })
-            //     $http({
-            //         method: 'POST',
-            //         url: util.getApiUrl('movie', '', 'server'),
-            //         data: data
-            //     }).then(function successCallback(response) {
-            //         console.log(response)
-            //         var msg = response.data;
-            //         // 字段 错误
-            //         if (msg.rescode == '200') {
-            //            // self.movieInfo = msg.
-            //         } else if (msg.rescode == "401") {
-            //             alert('访问超时，请重新登录');
-            //             $state.go('login');
-            //         } else {
-            //             alert(msg.rescode + ' ' + msg.errInfo);
-            //         }
-            //     }, function errorCallback(response) {
-            //         alert(response.status + ' 服务器出错');
-            //     }).finally(function(value) {
-            //         self.loading = false;
-            //     });
-            // }
+
 
             // 获取 电影的 信息
             self.getMovieInfo = function () {
@@ -985,11 +958,6 @@
                     "token": util.getParams('token'),
                     "action": "getMovieInfoByID",
                     "movieID":self.maskParams.movieID
-                    // 假数据
-                    // "movieID":10
-                    
-                    // 语言 可要 可不要
-                    // "lang": "zh-CN"
                 })
                 $http({
                     method: 'POST',
@@ -998,7 +966,6 @@
                 }).then(function successCallback(response) {
 
                     var msg = response.data;
-                    console.log(msg)
                     if (msg.rescode == '200') {
                         // // json字符串 -->对象
                         // msg.Actor =   eval('(' + msg.Actor + ')');
@@ -1032,7 +999,6 @@
                     var index = self.catrgoryArr.indexOf(id);
                     self.catrgoryArr.splice(index, 1);
                 }
-                console.log(self.catrgoryArr)
             }
 
             // 编辑产地分类
@@ -1043,7 +1009,6 @@
                     var index = self.LocationArr.indexOf(id);
                     self.LocationArr.splice(index, 1);
                 }
-                console.log(self.LocationArr)
             }
             // 监测电影分类，如果有，返回true
             self.checkCategory = function(id, Category) {
@@ -1059,7 +1024,6 @@
 
             // 监测电影分类，如果有，返回true
             self.checkLocation = function(id, Location) {
-                console.log('id:'+id+"  location:"+Location)
                 for (var i = 0; i < Location.length; i++) {
                     if (Location[i] == id) {
                         // 加入数组中
