@@ -7,11 +7,14 @@
       return {
           restrict: 'A',
           link: function(scope, element, attrs) {
+              // debugger;
               var model = $parse(attrs.fileModel);
               var modelSetter = model.assign;
               
               element.bind('change', function(){
                   scope.$apply(function(){
+                      // console.log(scope)
+                      // console.log(element[0].files[0])
                       modelSetter(scope, element[0].files[0]);
                   });
                   if(attrs.e != 'none') {

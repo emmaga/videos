@@ -400,7 +400,6 @@
             self.add = function(task) {
                 console.log(task)
                 $scope.app.maskUrl = "pages/addMovieInfo.html";
-                // $scope.app.maskParams = {taskID:task.ID,URL_ABS:task.URL,MovieSize:task.Size,Duration:task.Duration};
                 $scope.app.maskParams = task;
             }
             // 获取转码完成的列表
@@ -476,11 +475,13 @@
                             self.noCategotyData = true;
                         } else {
                             self.categoryList = msg.CategoryList;
+                            console.log(self.categoryList)
                         }
                         if (msg.LocationList.length == 0) {
                             self.noLocationData = true;
                         } else {
                             self.locationList = msg.LocationList;
+                            console.log(self.locationList)
                         }
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
@@ -561,6 +562,30 @@
                     }
                 });
             }
+
+
+            // // 监测电影分类，如果有，返回true
+            // self.checkCategory = function(id, Category) {
+            //     for (var i = 0; i < Category.length; i++) {
+            //         if (Category[i] == id) {
+            //             // 加入数组中
+            //             self.chooseCateory(id, true);
+            //             return true;
+            //         }
+            //     }
+            // }
+
+
+            // // 监测电影分类，如果有，返回true
+            // self.checkLocation = function(id, Location) {
+            //     for (var i = 0; i < Location.length; i++) {
+            //         if (Location[i] == id) {
+            //             // 加入数组中
+            //             self.chooseLocation(id, true);
+            //             return true;
+            //         }
+            //     }
+            // }
         }
     ])
 
