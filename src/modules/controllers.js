@@ -716,6 +716,7 @@
                             $scope.$apply(function(){
                               o.setSrcSizeById('img', id, ret.upload_path, ret.size);
                             });
+                            self.movieInfo.PicSize = ret.size;
                             alert('图片上传成功')
                         },
                         // 上传失败
@@ -809,6 +810,7 @@
                     "taskID": self.maskParams.ID,
                     "Movie": {
                         "Seq": self.movieInfo.Seq,
+                        "PicSize": self.movieInfo.PicSize - 0,
                         "Name": self.movieInfo.Name,
                         "Actor":self.movieInfo.Actor,
                         "Director": self.movieInfo.Director,
