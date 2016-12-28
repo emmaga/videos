@@ -2,6 +2,52 @@ body{
   font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;
 }
 
+.modal{
+    display: block;
+    overflow-y: auto;
+}
+
+.modal-backdrop{
+    z-index: 0;
+}
+
+.break-space-double{
+  opacity: 0;
+  margin-top:15px;
+  margin-bottom: 15px;
+}
+
+.fixed-width-1{
+  width: 39px;
+}
+.fixed-width-2{
+  width: 56px;
+}
+.fixed-width-3{
+  width: 120px;
+}
+
+.fixed-width-4{
+  width: 256px;
+}
+
+.fixed-width-5{
+  width: 320px;
+}
+
+.fixed-width-6{
+  width: 366px;
+}
+
+
+.fixed-height-1{
+  height:320px;
+}
+
+.fixed-height-2{
+  height:4px;
+}
+
 .navbar-static-top {
   margin-bottom:20px;
 }
@@ -62,10 +108,7 @@ footer {
 .table.width-poster td{
   vertical-align:middle;
 }
-.modal-backdrop{
-  position: fixed;
-  pointer-events: none;
-}
+
 a{
   text-decoration: none !important;
 }

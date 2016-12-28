@@ -1,5 +1,5 @@
-<!--fix my css-->
-<div style="position: absolute; top: 0; z-index: 1000; overflow: auto; height: 100%;" ng-controller="editMovieInfoController as editMovieInfo" ng-init="editMovieInfo.init()">
+<div class="modal" ng-controller="editMovieInfoController as editMovieInfo" ng-init="editMovieInfo.init()">
+    <div class="modal-backdrop in"></div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -19,13 +19,17 @@
                     <div class="form-group">
                         <label>类型</label>
                         <div ng-show="editMovieInfo.noCategotyData">查无数据</div>
-                        <span ng-repeat="category in editMovieInfo.movieInfo.CategoryList track by $index"><input type="checkbox" ng-click="editMovieInfo.chooseCateory(category.ID,this.value)" ng-model="this.value" ng-init="this.value=editMovieInfo.checkCategory(category.ID,editMovieInfo.movieInfo.Category)">{{category.CategoryName[editMovieInfo.defaultLang]}}</span>
+                        <span ng-repeat="category in editMovieInfo.movieInfo.CategoryList track by $index">
+                            <input type="checkbox" ng-click="editMovieInfo.chooseCateory(category.ID,this.value)" ng-model="this.value" ng-init="this.value=editMovieInfo.checkCategory(category.ID,editMovieInfo.movieInfo.Category)"> {{category.CategoryName[editMovieInfo.defaultLang]}} 
+                        </span>
                     </div>
                     <hr>
                     <div class="form-group">
                         <label>产地</label>
                         <div ng-show="editMovieInfo.noLocationData">查无数据</div>
-                        <span ng-repeat="location in editMovieInfo.movieInfo.LocationList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="editMovieInfo.chooseLocation(location.ID,this.value)" ng-init="this.value=editMovieInfo.checkLocation(location.ID,editMovieInfo.movieInfo.Location)">{{location.LocationName[editMovieInfo.defaultLang]}}</span>
+                        <span ng-repeat="location in editMovieInfo.movieInfo.LocationList track by $index">
+                            <input type="checkbox" ng-model="this.value" ng-click="editMovieInfo.chooseLocation(location.ID,this.value)" ng-init="this.value=editMovieInfo.checkLocation(location.ID,editMovieInfo.movieInfo.Location)"> {{location.LocationName[editMovieInfo.defaultLang]}} 
+                        </span>
                     </div>
                     <hr>
                     <div class="form-group">

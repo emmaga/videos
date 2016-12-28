@@ -28,15 +28,15 @@
                 <td>{{task.Size}}</td>
                 <td>
                     <div class="progress in-table">
-                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{task.TranscodePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: 100%;min-width: 2em;">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{task.TranscodePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{task.TranscodePercent}}%;min-width: 2em;">
                             {{task.TranscodePercent}}%
                         </div>
                     </div>
                 </td>
-                <td>{{task.Size*(100-task.TranscodePercent)/100}}</td>
+                <td>{{task.Size*(100-task.TranscodePercent)/100}} 字节</td>
                 <td>{{task.TranscodeFailInfo}}</td>
                 <!-- 删除先不做 -->
-<!--                 <td>
+                <!--<td>
                     <button class="btn btn-xs btn-default" title="删除">
                         <i class="glyphicon glyphicon-remove"></i>
                     </button>

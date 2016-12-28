@@ -1,11 +1,10 @@
-<!--fix my css-->
-<div style="position: absolute; top: 0; z-index: 1000; overflow: auto; height: 100%;" ng-controller="addMovieController as addMovie" ng-init="addMovie.init()">
-    
+<div class="modal in" ng-controller="addMovieController as addMovie" ng-init="addMovie.init()">
+    <div class="modal-backdrop in"></div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button ng-click="addMovie.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">编辑信息</h4>
+                <h4 class="modal-title">添加电影</h4>
             </div>
             <form name="addMovieForm" ng-submit="addMovieForm.$valid && addMovie.add()">
                 <div class="modal-body">
@@ -27,7 +26,7 @@
                 </div>
                 <div class="modal-footer">
                     <a ng-click="addMovie.cancel()" class="btn">取消</a>
-                    <button class="btn btn-primary" type="submit">保存修改</button>
+                    <button class="btn btn-primary" type="submit">添加</button>
                 </div>
             </form>  
         </div>

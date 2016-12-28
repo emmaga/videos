@@ -1,6 +1,6 @@
 <!--fix my css-->
-<div style="position: absolute; top: 0; z-index: 1000; overflow: auto; height: 100%;"  ng-controller="addMovieInfoController as addMovieInfo" ng-init="addMovieInfo.init()">
-    
+<div class="modal"  ng-controller="addMovieInfoController as addMovieInfo" ng-init="addMovieInfo.init()">
+    <div class="modal-backdrop in"></div>
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -21,13 +21,15 @@
                         <div class="form-group">
                             <label>类型</label>
                             <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
-                            <span ng-repeat="category in addMovieInfo.categoryList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="addMovieInfo.chooseCateory(category.ID,this.value)" >{{category.CategoryName[addMovieInfo.defaultLang]}}</span>
+                            <span ng-repeat="category in addMovieInfo.categoryList track by $index">
+                                <input type="checkbox" ng-model="this.value" ng-click="addMovieInfo.chooseCateory(category.ID,this.value)" > {{category.CategoryName[addMovieInfo.defaultLang]}} 
+                            </span>
                         </div>
                         <hr>
                         <div class="form-group">
                             <label>产地</label>
                             <div ng-show="addMovieInfo.noLocationData">查无数据</div>
-                            <span ng-repeat="location in addMovieInfo.locationList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="addMovieInfo.chooseLocation(location.ID,this.value)" >{{location.LocationName[addMovieInfo.defaultLang]}}</span>
+                            <span ng-repeat="location in addMovieInfo.locationList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="addMovieInfo.chooseLocation(location.ID,this.value)" > {{location.LocationName[addMovieInfo.defaultLang]}}</span> 
                         </div>
                         <hr>
                         <div class="form-group">
