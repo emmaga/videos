@@ -25,7 +25,7 @@
         <tbody>
             <tr ng-repeat= "task in tl.taskList track by $index">
                 <td>{{task.FileOrigName}}</td>
-                <td>{{task.Size}}</td>
+                <td>{{task.Size}} 字节</td>
                 <td>
                     <div class="progress in-table">
                         <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="{{task.TranscodePercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{task.TranscodePercent}}%;min-width: 2em;">

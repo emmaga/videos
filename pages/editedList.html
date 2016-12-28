@@ -6,17 +6,36 @@
         </strong>
     </a>
     <hr>
-    <input ng-model="editedList.keywords" />
-    <button ng-click="editedList.getMovieList()" ng-disabled="editedList.loading" class="btn btn-primary">搜索</button>
+    
+    <!--搜索框-->
+    <div class="row">
+      <div class="col-lg-3">
+        <div class="input-group">
+          <input ng-model="editedList.keywords" type="text" class="form-control" placeholder="请输入视频名称" />
+          <span class="input-group-btn">
+            <button class="btn btn-primary" ng-click="editedList.getMovieList()" ng-disabled="editedList.loading" class="btn btn-primary">搜索</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+    <!--搜索框-->
+
+    <hr class="break-space">
+
     <div class="form-group">
         <label>类型</label><br>
         <div ng-show="editedList.noCategotyData">查无数据</div>
-        <span ng-repeat="category in editedList.categoryList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="editedList.chooseCateory(category.ID,this.value)" ng-disabled="editedList.loading">{{category.CategoryName[editedList.defaultLang]}}</span>
+        <span ng-repeat="category in editedList.categoryList track by $index">
+            <input type="checkbox" ng-model="this.value" ng-click="editedList.chooseCateory(category.ID,this.value)" ng-disabled="editedList.loading"> {{category.CategoryName[editedList.defaultLang]}} 
+        </span>
     </div>
+
     <div class="form-group">
         <label>产地</label><br>
         <div ng-show="editedList.noLocationData">查无数据</div>
-        <span ng-repeat="location in editedList.locationList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="editedList.chooseLocation(location.ID,this.value)" ng-disabled="editedList.loading">{{location.LocationName[editedList.defaultLang]}}</span>
+        <span ng-repeat="location in editedList.locationList track by $index">
+            <input type="checkbox" ng-model="this.value" ng-click="editedList.chooseLocation(location.ID,this.value)" ng-disabled="editedList.loading"> {{location.LocationName[editedList.defaultLang]}} 
+        </span>
     </div>
     <hr class="break-space">
     
@@ -30,7 +49,7 @@
             </tr>
         </thead>
         <tbody>
-            <div ng-show="editedList.loading">Loading...</div>
+            <div ng-show="editedList.loading">loading...</div>
             <tr ng-repeat="movie in $data track by $index">
                 <td data-title="'名称'" >{{movie.Name[editedList.defaultLang]}}</td>
                 <td data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
