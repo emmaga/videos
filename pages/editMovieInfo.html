@@ -38,7 +38,8 @@
                         <input type="file" file-model="myCoverImg" data-e="none" required>
                         <br>
                         <div ng-repeat="img in editMovieInfo.uploadList.data">
-                            <img src="{{img.img.src}}"> 上传进度：{{img.img.percentComplete}}
+                            <img width="100%" src="{{img.img.src}}">
+                            上传进度：{{img.img.percentComplete}}
                         </div>
                         <hr class="break-space">
                         <div ng-click="editMovieInfo.addCoverImg()" class="btn btn-primary">上传</div>

@@ -36,7 +36,7 @@
                             <label>封面</label><br>
                                <input type="file" file-model="myCoverImg" data-e="none" required><br>
                                <div ng-repeat="img in addMovieInfo.uploadList.data">
-                                <img src="{{img.img.src}}">
+                                <img width="100%" src="{{img.img.src}}">
                                 上传进度：{{img.img.percentComplete}}  
                                </div>
                             <hr class="break-space">
