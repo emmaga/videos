@@ -34,7 +34,6 @@
                 }).then(function successCallback(response) {
                             var msg = response.data;
                             if (msg.rescode == '200') {
-                                console.log(msg.token)
                                 util.setParams('token', msg.token);
                                 self.getEditLangs();
                             } else {
@@ -336,7 +335,6 @@
     .controller('transcodingListController', ['$http', '$scope', '$state', '$stateParams', 'util', 
         function($http, $scope, $state, $stateParams, util) {
             console.log('transcodingListController')
-            console.log($state.current.name)
             var self = this;
             self.init = function() {
                 // 隐藏上传列表
@@ -395,7 +393,6 @@
             }
 
             self.add = function(task) {
-                console.log(task)
                 $scope.app.maskUrl = "pages/addMovieInfo.html";
                 $scope.app.maskParams = task;
             }
@@ -472,13 +469,11 @@
                             self.noCategotyData = true;
                         } else {
                             self.categoryList = msg.CategoryList;
-                            console.log(self.categoryList)
                         }
                         if (msg.LocationList.length == 0) {
                             self.noLocationData = true;
                         } else {
                             self.locationList = msg.LocationList;
-                            console.log(self.locationList)
                         }
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
@@ -514,7 +509,6 @@
 
             // 监听 分类 产地 的变化
             $scope.$watch('arr', function(value) {
-                console.log('watch')
                 self.getMovieList();
             },true)
 
@@ -544,12 +538,10 @@
                             url: util.getApiUrl('movie', 'shopList', 'server'),
                             data: data
                         }).then(function successCallback(data, status, headers, config) {
-                            console.log(data)
                             if (data.data.total == 0) {
                                 self.noData = true;
                             }
                             params.total(data.data.total);
-                            console.log(data.data.movieList)
                             return data.data.movieList;
                         }, function errorCallback(data, status, headers, config) {
                             alert(response.status + ' 服务器出错');
@@ -609,7 +601,6 @@
     .controller('addMovieInfoController', ['$http', '$scope', '$state', '$stateParams', 'util', 'CONFIG', 
         function($http, $scope, $state, $stateParams, util, CONFIG) {
             console.log('addMovieInfoController')
-            console.log($scope.app.maskParams)
             var self = this;
             self.init = function() {
                 self.editLangs = util.getParams('editLangs')
@@ -855,12 +846,10 @@
     .controller('editMovieInfoController', ['$http', '$scope', '$state', '$filter', '$stateParams', 'util', 'CONFIG',
         function($http, $scope, $state, $filter, $stateParams, util, CONFIG) {
             console.log('addMovieInfoController')
-            console.log($scope.app.maskParams)
             var self = this;
             self.init = function() {
                 self.editLangs = util.getParams('editLangs')
                 self.defaultLang = util.getDefaultLangCode();
-
                 self.maskParams = $scope.app.maskParams;
                 // 电影分类 初始化 数组 电影产地 初始化 数组
                 self.catrgoryArr = []; 
@@ -1001,6 +990,10 @@
                         var img = {};
                         img.img = {}, img.img.src = self.movieInfo.PicURL_ABS;
                         self.uploadList.data = [img];
+                        // URL_ABS
+                        self.maskParams.URL_ABS = msg.URL_ABS;
+                        // Duration
+                        self.maskParams.Duration = msg.Duration;
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
                         $state.go('login');
