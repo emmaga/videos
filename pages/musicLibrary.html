@@ -1,0 +1,34 @@
+<div ng-controller="musicLiarbryController as mL" ng-init="mL.init()" class="col-sm-9 page col-right">
+    <a>
+        <strong>
+            <i class="glyphicon glyphicon-music"></i>
+            音乐库
+        </strong>
+    </a>
+    <hr>
+
+    <button ng-click="mL.addMusic()" class="btn btn-primary">添加音乐</button>
+
+    <hr class="break-space">
+    
+    <table class="table table-hover table-condensed">
+        <thead>
+            <tr>
+                <th>封面</th>
+                <th>名称</th>
+                <th>歌手</th>
+                <th>编辑</th>
+            </tr>
+        </thead>
+        <tbody>
+            <div ng-show="mL.loading">loading...</div>
+            <tr ng-repeat="music in mL.musicList">
+                <td data-title="'封面'" ><img src="" alt="" ng-src="{{music.PicURL_ABS}}" style="max-width: 100px;max-height: 100px;"> </td>
+                <td data-title="'名称'" >{{music.Name[mL.defaultLang]}}</td>
+                <td data-title="'歌手'" >{{music.SingerName[mL.defaultLang]}}</td>
+                <td data-title="'编辑'" ><button ng-click="mL.editMusic(music.musicID)" class="btn btn-default">编辑</button> </td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-show="mL.noData">查无数据</div>
+</div>

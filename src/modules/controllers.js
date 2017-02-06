@@ -1105,5 +1105,381 @@
             }
         }
     ])    
+
+    // 音乐库
+    .controller('musicLiarbryController', ['$http', '$scope', '$state', '$filter', '$stateParams', 'NgTableParams', 'util',
+        function($http, $scope, $state, $filter, $stateParams, NgTableParams, util) {
+            console.log('musicLiarbryController')
+            var self = this;
+            self.init = function() {
+
+
+                self.defaultLang = util.getDefaultLangCode();
+                self.getMusicList();
+            }
+
+
+
+            // 查询音乐列表
+            self.getMusicList = function() {
+                self.loading = true;
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "getMusicList"
+                })
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('music', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                        console.log(msg.musicList)
+                        if (msg.musicList.length == 0) {
+                            self.noData = true;
+                            return;
+                        }
+                        self.musicList = msg.musicList;
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.loading = false;
+                });
+            }
+
+            self.addMusic = function() {
+                $scope.app.maskUrl = "pages/addMusic.html";
+                // $scope.app.maskParams = { movieID: movieID };
+            }
+
+            self.edit = function(movieID) {
+                $scope.app.maskUrl = "pages/editMovieInfo.html";
+                $scope.app.maskParams = { movieID: movieID };
+            }
+
+
+
+        }
+    ])
+
+    //  添加音乐
+    .controller('addMusicController', ['$http', '$scope', '$state', '$stateParams', 'util', 'CONFIG', 
+        function($http, $scope, $state, $stateParams, util, CONFIG) {
+            console.log('addMovieInfoController')
+            var self = this;
+            self.init = function() {
+                self.editLangs = util.getParams('editLangs')
+                self.defaultLang = util.getDefaultLangCode();
+
+                self.maskParams = $scope.app.maskParams;
+
+                self.movieInfo = {};
+                // 提交的多语言
+                
+                // 上传,音乐和图标实例化了两个对象
+                // self.uploadList = new UploadLists();
+                // 上传图标
+                self.imgUploadList = new UploadLists();
+                // 上传音乐
+                self.musicUploadList = new UploadLists();
+                self.getTags();
+            }
+
+            // 添加音乐
+            self.saveForm = function () {
+                console.log(self.imgUploadList)
+                console.log(self.musicUploadList)
+                if (self.musicUploadList.data.length == 0) {
+                    alert('请上传音乐');
+                    return;
+                }
+                if (self.imgUploadList.data.length == 0) {
+                    alert('请上传音乐图标');
+                    return;
+                }
+
+                self.saving = true;
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "addMusic",
+                    "lang": "zh-CN",
+                    "Music": {
+                        "Seq": self.musicInfo.Seq,
+                        "Name": self.musicInfo.Name,
+                        "SingerName": self.musicInfo.SingerName,
+                        "ColumnName": self.musicInfo.ColumnName,
+                        "MusicIntro": self.musicInfo.MusicIntro,
+
+                        "URL_ABS": self.musicUploadList.data[0].img.src,
+                        "PicSize": self.musicUploadList.data[0].img.size,
+                        "PicURL_ABS": self.imgUploadList.data[0].img.src,
+                        "PicSize": self.imgUploadList.data[0].img.size,
+
+                        "Duration": self.musicInfo.Duration,
+                    }
+                })
+                
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('music', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                       
+                        alert('添加成功')
+                        self.cancel();
+                        $state.reload('app.musicLibrary',$stateParams,{reload:true})
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.saving = false;
+                    self.cancel();
+                });
+            }
+
+            self.cancel = function() {
+                $scope.app.maskUrl = "";
+            }
+
+            // 上传图标
+            self.addCoverImg = function() {
+                self.imgUploadList.uploadFile($scope.myCoverImg, self.imgUploadList);
+            }
+            
+            // 上传音乐，同一个上传的函数，没有改动
+            self.addMusic = function() {
+                self.musicUploadList.uploadFile($scope.myMusic, self.musicUploadList);
+            }
+
+            function UploadLists() {
+                this.data = [
+                ];
+                this.maxId = 0;
+            }
+
+            UploadLists.prototype = {
+                add: function(img) {
+                    this.data.push({"img": img, "id": this.maxId});
+                    return this.maxId;
+                },
+                changeImg: function(img){
+                    // 只允许 上传 一张图片
+                    this.data =[];
+                    this.data.push({"img": img, "id": this.maxId});
+                    return this.maxId;
+                },
+                setPercentById: function(type, id, percentComplete) {
+                    for(var i =0; i < this.data.length; i++) {
+                        if(this.data[i].id == id) {
+                            this.data[i][type].percentComplete = percentComplete;
+                            break;
+                        }
+                    }
+                },
+                setSrcSizeById: function(type, id, src, size) {
+                    for(var i =0; i < this.data.length; i++) {
+                        if(this.data[i].id == id) {
+                            this.data[i][type].src = src;
+                            this.data[i][type].size = size;
+                            break;
+                        }
+                    }
+                },
+                deleteById: function(id) {
+                    var l = this.data;
+                    for(var i = 0; i <l.length; i++) {
+                        if (l[i].id == id) {
+                            // 如果正在上传，取消上传
+                            // 图片
+                            if(l[i].img.percentComplete < 100 && l[i].img.percentComplete != '失败') {
+                                l[i].video.xhr.abort();
+                            }
+                            // 删除data
+                            l.splice(i, 1);
+                            break;
+                        }
+                    }
+                },
+                uploadFile: function(imgFile, o) {
+                    // 图片上传后台地址
+                    var uploadUrl = CONFIG.uploadImgUrl;
+
+                    // 图片对象
+                    var imgXhr = new XMLHttpRequest();
+                    var img = {"name": imgFile.name, "size":imgFile.size, "percentComplete": 0, "xhr": imgXhr};
+
+                    var id = this.changeImg(img);
+                    // 上传视频
+                    util.uploadFileToUrl(imgXhr, imgFile, uploadUrl, 'normal',
+                        // 上传中
+                        function(evt) {
+                            $scope.$apply(function() {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                                    // 更新上传进度
+                                    o.setPercentById('img', id, percentComplete);
+                                }
+                            });
+                        },
+
+                        // 上传成功
+                        function(xhr) {
+                            var ret = JSON.parse(xhr.responseText);
+                            console && console.log(ret);
+                            $scope.$apply(function(){
+                              o.setSrcSizeById('img', id, ret.upload_path, ret.size);
+                            });
+                            self.movieInfo.PicSize = ret.size;
+                            alert('上传成功')
+                        },
+                        // 上传失败
+                        function(xhr) {
+                            alert('图片上传失败，请重新上传');
+                            o.deleteById(id)
+                            xhr.abort();
+                        }
+                    );
+                }
+            }
+
+            // 获取 电影的 分类 产地
+            self.getTags = function () {
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "getTags"
+                    // "lang": "zh-CN"
+                })
+
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('movie', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    // 字段 错误
+                    if (msg.rescode == '200') {
+                        if (msg.CategoryList.length == 0) {
+                            self.noCategotyData = true;
+                        } else {
+                            self.categoryList = msg.CategoryList;
+                        }
+                        if (msg.LocationList.length == 0) {
+                            self.noLocationData = true;
+                        } else {
+                            self.locationList = msg.LocationList;
+                        }
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.loading = false;
+                });
+            }
+            // 编辑电影分类
+            self.chooseCateory = function(id, value) {
+                if (value == true) {
+                    self.catrgoryArr.push(id);
+                } else {
+                    var index = self.catrgoryArr.indexOf(id);
+                    self.catrgoryArr.splice(index, 1);
+                }
+            }
+
+            // 编辑产地分类
+            self.chooseLocation = function(id, value) {
+                if (value == true) {
+                    self.LocationArr.push(id);
+                } else {
+                    var index = self.LocationArr.indexOf(id);
+                    self.LocationArr.splice(index, 1);
+                }
+            }
+
+
+            // 添加电影入库
+            self.addMovie = function () {
+                if (self.catrgoryArr.length == 0) {
+                    alert('请选择类型');
+                    return;
+                }
+                if (self.LocationArr.length == 0) {
+                    alert('请选择产地');
+                    return;
+                }
+                if (self.uploadList.data.length == 0) {
+                    alert('请上传图片');
+                    return;
+                }
+                self.saving = true;
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "addMovie",
+                    "lang": "zh-CN",
+                    "taskID": self.maskParams.ID,
+                    "Movie": {
+                        "Seq": self.movieInfo.Seq,
+                        "PicSize": self.movieInfo.PicSize - 0,
+                        "Name": self.movieInfo.Name,
+                        "Actor":self.movieInfo.Actor,
+                        "Director": self.movieInfo.Director,
+                        "URL_ABS": self.maskParams.URL,
+                        "MovieSize": self.maskParams.Size,
+                        "Duration": self.maskParams.Duration,
+                        "Score": self.movieInfo.Score,
+                        "SearchName": self.movieInfo.SearchName,
+                        "Year": self.movieInfo.Year,
+                        "Price": self.movieInfo.Price,
+                        "Introduce": self.movieInfo.Introduce,
+                        "PicURL_ABS": self.uploadList.data[0].img.src
+                    },
+                    "Category": self.catrgoryArr,
+                    "Location": self.LocationArr
+                })
+
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('movie', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                       
+                        alert('添加成功')
+                        self.cancel();
+                        $state.reload('app.notEditedList')
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.saving = false;
+                    self.cancel();
+                });
+            }
+        }
+    ])  
+
     
 })();

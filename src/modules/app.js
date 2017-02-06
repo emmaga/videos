@@ -45,6 +45,10 @@
                 url: '/editedList',
                 templateUrl: 'pages/editedList.html'
             })
+            .state('app.musicLibrary', {
+                url: '/musicLibrary',
+                templateUrl: 'pages/musicLibrary.html'
+            })
     }])
 
 
