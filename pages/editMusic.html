@@ -1,0 +1,103 @@
+<!--fix my css-->
+<div class="modal"  ng-controller="editMusicController as editMusic" ng-init="editMusic.init()">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="editMusic.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">添加音乐</h4>
+            </div>
+            <form name="musicForm" novalidate ng-submit="musicForm.$valid && editMusic.saveForm()">
+                <div class="modal-body">
+                        <div class="form-group" >
+                            <span ng-repeat="lang in editMusic.editLangs track by $index">
+                                <label>音乐名-{{lang.name}}</label>
+                                <input type="text" class="form-control" ng-model="editMusic.musicInfo.Name[lang.code]" value="星际迷航" required>
+                            </span>
+                        </div>
+                        <hr>
+                        <div class="form-group" >
+                            <span ng-repeat="lang in editMusic.editLangs track by $index">
+                                <label>歌手-{{lang.name}}</label>
+                                <input type="text" class="form-control" ng-model="editMusic.musicInfo.SingerName[lang.code]" value="星际迷航" required>
+                            </span>
+                        </div>
+                        <hr>
+                        <div class="form-group" >
+                            <span ng-repeat="lang in editMusic.editLangs track by $index">
+                                <label>音乐集-{{lang.name}}</label>
+                                <input type="text" class="form-control" ng-model="editMusic.musicInfo.ColumnName[lang.code]" value="星际迷航" required>
+                            </span>
+                        </div>
+                        <hr>
+                        <div class="form-group" >
+                            <span ng-repeat="lang in editMusic.editLangs track by $index">
+                                <label>音乐简介-{{lang.name}}</label>
+                                <textarea type="text" class="form-control" ng-model="editMusic.musicInfo.MusicIntro[lang.code]" value="星际迷航" required></textarea> 
+                            </span>
+                        </div>
+                        <hr>
+
+                        <div class="form-group">
+                            <label>音乐时长</label>
+                            <input type="number" ng-model="editMusic.musicInfo.Duration" required>s
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>序号</label>
+                            <input type="number" ng-model="editMusic.musicInfo.Seq" required>
+                        </div>
+                        <hr>
+
+                        <div class="form-group">
+                            <label>音乐</label><br>
+                               <input type="file" file-model="myMusic" data-e="none" required><br>
+                               <div ng-repeat="music in editMusic.musicUploadList.data">
+                                上传进度：{{music.img.percentComplete}}  
+                               </div>
+                            <hr class="break-space">
+                            <div ng-click="editMusic.addMusic()" class="btn btn-default">上传</div>
+                        </div>
+                        <hr>
+
+
+                        <div class="form-group">
+                            <label>音乐大小</label>
+                           
+                            <div ng-repeat="music in editMusic.musicUploadList.data">
+                             {{music.img.size}}  
+                            </div>
+                        </div>
+                        <hr>
+
+
+                        <div class="form-group">
+                            <label>音乐图标</label><br>
+                               <input type="file" file-model="myCoverImg" data-e="none" required><br>
+                               <div ng-repeat="img in editMusic.imgUploadList.data">
+                                <img width="100%" src="{{img.img.src}}" style="max-width:100px;max-height:100px;">
+                                上传进度：{{img.img.percentComplete}}  
+                               </div>
+                            <hr class="break-space">
+                            <div ng-click="editMusic.addCoverImg()" class="btn btn-default">上传</div>
+                        </div>
+                        <hr>
+
+                        <div class="form-group">
+                            <label>音乐图标大小</label>
+                            <div ng-repeat="img in editMusic.imgUploadList.data">
+                             {{img.img.size}}  
+                            </div>
+                        </div>
+                        <hr>
+                </div>
+                <div class="modal-footer">
+                    <a ng-click="editMusic.cancel()" class="btn">取消</a>
+                    <button class="btn btn-primary" type="submit" ng-disabled="musicForm.$invalid || editMusic.saving ">保存修改</button>
+                    
+                </div>
+            </form>  
+        </div>
+    </div>
+
+</div>
