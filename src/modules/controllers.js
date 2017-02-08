@@ -1202,6 +1202,10 @@
                     alert('请上传音乐图标');
                     return;
                 }
+                if (self.imgUploadList.data[0].img.percentComplete != 100 || self.musicUploadList.data[0].img.percentComplete != 100) {
+                    alert('上传中，请稍等');
+                    return;
+                }
 
                 self.saving = true;
                 var data = JSON.stringify({
@@ -1255,11 +1259,19 @@
 
             // 上传图标
             self.addCoverImg = function() {
+                if (!$scope.myCoverImg) {
+                    alert('请先选择图标');
+                    return;
+                }
                 self.imgUploadList.uploadFile($scope.myCoverImg, self.imgUploadList);
             }
 
             // 上传音乐，同一个上传的函数，没有改动
             self.addMusic = function() {
+                if (!$scope.myMusic) {
+                    alert('请先选择音乐');
+                    return;
+                }
                 self.musicUploadList.uploadFile($scope.myMusic, self.musicUploadList);
             }
 
