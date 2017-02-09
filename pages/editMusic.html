@@ -60,6 +60,15 @@
                         </div>
                         <hr>
 
+                        <div class="form-group">
+                            <label>音乐地址</label>
+                           
+                            <div ng-repeat="music in editMusic.musicUploadList.data" style="word-wrap: break-word;">
+                             {{music.img.src}}  
+                            </div>
+                        </div>
+                        <hr>
+
 
                         <div class="form-group">
                             <label>音乐大小</label>

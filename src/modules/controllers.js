@@ -1637,7 +1637,7 @@
                                 o.setSrcSizeById('img', id, ret.upload_path, ret.size);
                             });
                             self.movieInfo.PicSize = ret.size;
-                            alert('上传成功')
+                            // alert('上传成功')
                         },
                         // 上传失败
                         function(xhr) {
