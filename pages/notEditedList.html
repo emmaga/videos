@@ -23,10 +23,9 @@
                     <button ng-click="notEditedList.add(task)" class="btn btn-xs btn-default" data-toggle="modal" title="入库" data-target="#film-edit">
                         <i class="glyphicon glyphicon-film"></i> 入库
                     </button>
-                    <!-- 删除功能 先不做 -->
-                    <!-- <button class="btn btn-xs btn-default" title="删除">
-                        <i class="glyphicon glyphicon-remove"></i>
-                    </button> -->
+                    <button ng-click="notEditedList.delMovie(task.ID)" class="btn btn-xs btn-default" title="删除">
+                        <i class="glyphicon glyphicon-remove"></i> 删除
+                    </button>
                 </td>
             </tr>
         </tbody>

@@ -428,6 +428,41 @@
                     self.loading = false;
                 });
             }
+
+            // 删除待入库电影
+            self.delMovie = function(id){
+                 var flag = confirm('确定删除？');
+                 if (!flag) {
+                    return;
+                 }
+                 var data = JSON.stringify({
+                     "token": util.getParams('token'),
+                     "action": "delTranscodeTask",
+                     "lang": "zh-CN",
+                     "taskID": id
+                 })
+                 $http({
+                     method: 'POST',
+                     url: util.getApiUrl('movie', '', 'server'),
+                     data: data
+                 }).then(function successCallback(response) {
+                     var msg = response.data;
+                     if (msg.rescode == '200') {
+                         alert('删除成功');
+                         $state.reload($state.current.name);
+                     } else if (msg.rescode == "401") {
+                         alert('访问超时，请重新登录');
+                         $state.go('login');
+                     } else {
+                         alert(msg.rescode + ' ' + msg.errInfo);
+                     }
+                 }, function errorCallback(response) {
+                     alert(response.status + ' 服务器出错');
+                 }).finally(function(value) {
+                 });
+
+
+            }
         }
     ])
 
@@ -554,6 +589,41 @@
 
             self.addMoreMovie = function() {
                 $scope.app.maskUrl = "pages/addMoreMovie.html";
+            }
+
+            // 删除已入库电影
+            self.delMovie = function(id){
+                 var flag = confirm('确定删除？');
+                 if (!flag) {
+                    return;
+                 }
+                 var data = JSON.stringify({
+                     "token": util.getParams('token'),
+                     "action": "delMovie",
+                     "lang": "zh-CN",
+                     "movieID": id
+                 })
+                 $http({
+                     method: 'POST',
+                     url: util.getApiUrl('movie', '', 'server'),
+                     data: data
+                 }).then(function successCallback(response) {
+                     var msg = response.data;
+                     if (msg.rescode == '200') {
+                         alert('删除成功');
+                         $state.reload($state.current.name);
+                     } else if (msg.rescode == "401") {
+                         alert('访问超时，请重新登录');
+                         $state.go('login');
+                     } else {
+                         alert(msg.rescode + ' ' + msg.errInfo);
+                     }
+                 }, function errorCallback(response) {
+                     alert(response.status + ' 服务器出错');
+                 }).finally(function(value) {
+                 });
+
+
             }
 
             
