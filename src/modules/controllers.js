@@ -1574,7 +1574,7 @@
                         "MusicIntro": self.musicInfo.MusicIntro,
 
                         "URL_ABS": self.musicUploadList.data[0].img.src,
-                        "PicSize": self.musicUploadList.data[0].img.size,
+                        "MusicSize": self.musicUploadList.data[0].img.size,
                         "PicURL_ABS": self.imgUploadList.data[0].img.src,
                         "PicSize": self.imgUploadList.data[0].img.size,
 
@@ -1774,7 +1774,7 @@
                         "MusicIntro": self.musicInfo.MusicIntro,
 
                         "URL_ABS": self.musicUploadList.data[0].img.src,
-                        "PicSize": self.musicUploadList.data[0].img.size,
+                        "MusicSize": self.musicUploadList.data[0].img.size,
                         "PicURL_ABS": self.imgUploadList.data[0].img.src,
                         "PicSize": self.imgUploadList.data[0].img.size,
 
