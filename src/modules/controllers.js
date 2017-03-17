@@ -1300,15 +1300,11 @@
 
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                        // // json字符串 -->对象
-                        // msg.Actor =   eval('(' + msg.Actor + ')');
-                        // msg.Director =   eval('(' + msg.Director + ')')
-                        // msg.Introduce =   eval('(' + msg.Introduce + ')')
-                        // msg.Name =   eval('(' + msg.Name + ')')
                         self.movieInfo = msg;
                         // 和上传 图片 的 数据 结构一致
                         var img = {};
-                        img.img = {}, img.img.src = self.movieInfo.PicURL_ABS,
+                        img.img = {};
+                        img.img.src = self.movieInfo.PicURL_ABS;
                         img.img.size = self.movieInfo.PicSize;
                         self.uploadList.data = [img];
                         // URL_ABS
@@ -1380,8 +1376,6 @@
                     "action": "addMovie",
                     "lang": "zh-CN",
                     "movieID": self.maskParams.movieID,
-                    // 假数据
-                    // "movieID": 10,
                     "Movie": {
                         "Seq": self.movieInfo.Seq,
                         "Name": self.movieInfo.Name,
@@ -1401,7 +1395,6 @@
                     "Category": self.catrgoryArr,
                     "Location": self.LocationArr
                 })
-                // return;
                 $http({
                     method: 'POST',
                     url: util.getApiUrl('movie', '', 'server'),
