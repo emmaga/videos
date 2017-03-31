@@ -8,6 +8,14 @@
             </div>
             <form name="musicForm" novalidate ng-submit="musicForm.$valid && addMusic.saveForm()">
                 <div class="modal-body">
+                    <!--TODO-->
+                        <div class="form-group" >
+                            <span>
+                                <label>音乐库名</label>
+                                <input type="text" class="form-control" ng-model="addMusic.musicInfo.libName[lang.code]" value="星际迷航" required>
+                            </span>
+                        </div>
+                    <!--/TODO-->
                         <div class="form-group" >
                             <span ng-repeat="lang in addMusic.editLangs track by $index">
                                 <label>音乐名-{{lang.name}}</label>
