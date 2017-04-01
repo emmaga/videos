@@ -86,10 +86,7 @@
                 // 初始化上传列表对象
                 self.uploadList = new UploadLists();
 
-                // TODO
-                //获取音乐库列表
                 self.getList();
-                // TODO-END
             }
 
             self.gotoPage = function(pageName) {
@@ -112,28 +109,28 @@
                     $state.go(pageName);
                 }
             }
-            // TODO
+            
+            self.goTOMusicLibrary = function(ID){
+                $state.go('app.musicLibrary',{LibID:ID})
+            }
+
+
             // 获取音乐库列表
             self.getList = function() {
                 self.loading = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "getList",
-                    "LibID": 1
+                    "action": "getLibList",
+                    "lang": "zh-CN"
                 })
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('music', '', 'server'),
+                    url: util.getApiUrl('musiclib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                        console.log(msg)
-                        if (msg.length == 0) {
-                            self.noData = true;
-                            return;
-                        }
-                        self.List = msg;
+                        self.musicLibList = msg.data;
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
                         $state.go('login');
@@ -1470,9 +1467,8 @@
             console.log('musicLiarbryController')
             var self = this;
             self.init = function() {
-                // TODO
-                self.ID = $scope.app.maskParams.ID;
-                // TODO-END
+                self.stateParams = $stateParams;
+                console.log(self.stateParams)
                 self.defaultLang = util.getDefaultLangCode();
                 self.getMusicList();
             }
@@ -1482,28 +1478,23 @@
                 self.loading = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    // TODO
-                    "action": "getMusicList",
+                    "action": "getList",
                     "lang": "zh-CN",
-                    "LibID": 1,
-                    "ID": self.ID
-                    // TODO-END
+                    "LibID": self.stateParams.LibID,
                 })
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('music', '', 'server'),
+                    url: util.getApiUrl('musiclib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                        // TODO
-                        console.log(msg)
                         if (msg.length == 0) {
                             self.noData = true;
                             return;
                         }
-                        self.musicList = msg;
-                        // TODO-END
+                        self.musicList = msg.data;
+                        console.log(self.musicList)
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
                         $state.go('login');
@@ -1518,21 +1509,20 @@
             }
 
             // 删除音乐
-            self.delMusic = function(id){
+            self.delMusic = function(ID){
                  var flag = confirm('确定删除？');
                  if (!flag) {
                     return;
                  }
                  var data = JSON.stringify({
                      "token": util.getParams('token'),
-                     "action": "delMusic",
-                     "lang": "zh-CN",
-                     "ID": id,
-                     "Item":"Music"
+                     "action": "unlink",
+                     "ID": ID,
+                     "LibID": Number(self.stateParams.LibID)
                  })
                  $http({
                      method: 'POST',
-                     url: util.getApiUrl('music', '', 'server'),
+                     url: util.getApiUrl('musiclib', '', 'server'),
                      data: data
                  }).then(function successCallback(response) {
                      var msg = response.data;
@@ -1555,12 +1545,12 @@
 
             self.addMusic = function() {
                 $scope.app.maskUrl = "pages/addMusic.html";
-                // $scope.app.maskParams = { movieID: movieID };
+                $scope.app.maskParams = { LibID: self.stateParams.LibID };
             }
 
             self.editMusic = function(music) {
                 $scope.app.maskUrl = "pages/editMusic.html";
-                $scope.app.maskParams = { music: music };
+                $scope.app.maskParams = { music: music ,LibID: self.stateParams.LibID};
             }
 
 
@@ -1592,8 +1582,6 @@
 
             // 添加音乐
             self.saveForm = function() {
-                console.log(self.imgUploadList)
-                console.log(self.musicUploadList)
                 if (self.musicUploadList.data.length == 0) {
                     alert('请上传音乐');
                     return;
@@ -1610,22 +1598,21 @@
                 self.saving = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "addMusic",
+                    "action": "add",
                     "lang": "zh-CN",
-                    "Music": {
-                        // TODO-END
-                        "??": self.musicInfo.libName,
-                        // TODO-END
-                        "Seq": self.musicInfo.Seq,
+                    "Seq": Number(self.musicInfo.Seq),
+                    "LibID": Number(self.maskParams.LibID),
+                    "data": {
+                        
                         "Name": self.musicInfo.Name,
                         "SingerName": self.musicInfo.SingerName,
                         "ColumnName": self.musicInfo.ColumnName,
                         "MusicIntro": self.musicInfo.MusicIntro,
 
                         "URL_ABS": self.musicUploadList.data[0].img.src,
-                        "MusicSize": self.musicUploadList.data[0].img.size,
+                        "MusicSize":  Number(self.musicUploadList.data[0].img.size),
                         "PicURL_ABS": self.imgUploadList.data[0].img.src,
-                        "PicSize": self.imgUploadList.data[0].img.size,
+                        "PicSize":  Number(self.imgUploadList.data[0].img.size),
 
                         "Duration": self.musicInfo.Duration,
                     }
@@ -1633,7 +1620,7 @@
 
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('music', '', 'server'),
+                    url: util.getApiUrl('musiclib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
@@ -1784,6 +1771,7 @@
             self.init = function() {
                 self.editLangs = util.getParams('editLangs')
                 self.defaultLang = util.getDefaultLangCode();
+                self.maskParams = $scope.app.maskParams;
                 self.musicInfo = $scope.app.maskParams.music;
 
                 // 上传,音乐和图标实例化了两个对象
@@ -1811,24 +1799,21 @@
                 self.saving = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "addMusic",
-                    "musicID": self.musicInfo.musicID,
+                    "action": "edit",
+                    "ID": self.musicInfo.ID,
                     "lang": "zh-CN",
-                    "Music": {
-                        "Seq": self.musicInfo.Seq,
-                        // TODO-END
-                        "??": self.musicInfo.libName,
-                        // TODO-END
-
+                    "Seq": self.musicInfo.Seq,
+                    "LibID": Number(self.maskParams.LibID),
+                    "data": {
                         "Name": self.musicInfo.Name,
                         "SingerName": self.musicInfo.SingerName,
                         "ColumnName": self.musicInfo.ColumnName,
                         "MusicIntro": self.musicInfo.MusicIntro,
 
                         "URL_ABS": self.musicUploadList.data[0].img.src,
-                        "MusicSize": self.musicUploadList.data[0].img.size,
+                        "MusicSize": Number(self.musicUploadList.data[0].img.size),
                         "PicURL_ABS": self.imgUploadList.data[0].img.src,
-                        "PicSize": self.imgUploadList.data[0].img.size,
+                        "PicSize": Number(self.imgUploadList.data[0].img.size),
 
                         "Duration": self.musicInfo.Duration,
                     }
@@ -1836,7 +1821,7 @@
 
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('music', '', 'server'),
+                    url: util.getApiUrl('musiclib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;

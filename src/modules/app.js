@@ -46,14 +46,16 @@
                 templateUrl: 'pages/editedList.html'
             })
             .state('app.musicLibrary', {
-                url: '/musicLibrary',
+                url: '/musicLibrary?LibID',
                 templateUrl: 'pages/musicLibrary.html'
             })
     }])
 
 
     .constant('CONFIG', {
-        serverUrl: 'http://movies.clearidc.com/backend_movie/v1/',
+        // serverUrl: 'http://movies.clearidc.com/backend_movie/v1/',
+        // 张舰自己起的服务器
+        serverUrl: 'http://192.168.17.132/backend_movie/v1/',
         uploadImgUrl: 'http://mres.cleartv.cn/upload',
         uploadVideoUrl: 'http://movies.clearidc.com/upload',
         testUrl: 'test/',

@@ -39,21 +39,18 @@
                 </a>
                 <hr>
                 <hr>
-                <!--TODO-->
-                <a ng-click="app.gotoPage('app.musicLibrary')" class="font-bold no-underline cursor-default" data-toggle="collapse" data-target="#musicLib"
-                   type="button" aria-expanded="false" aria-controls="collapseExample" >
-                    <i class="glyphicon glyphicon-music"></i>&nbsp&nbsp音乐库
-                    <i ng-class="{'glyphicon-chevron-down': $state.includes('app.musicLibrary'), 'glyphicon-chevron-right': !$state.includes('app.musicLibrary')}"
-                       class="glyphicon pull-right margin-right-15"></i>
+
+
+                <a class="font-bold no-underline cursor-default"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                  <i class="glyphicon glyphicon-music"></i>&nbsp&nbsp音乐库
                 </a>
-                <ul class="nav nav-stacked collapse " id="musicLib">
-                    <hr>
-                    <li ng-repeat="lib in app.List">
-                        <a ng-click="app.sendID(lib.ID)">{{lib.Name[app.defaultLang]}}</a>
-                    </li>
-                </ul>
+                <div class="collapse" id="collapseExample">
+                  <li class="well"  ng-click="app.goTOMusicLibrary(lib.ID)" ng-repeat="lib in app.musicLibList">
+                    {{lib.Name[app.defaultLang]}}
+                  </li>
+                </div>
+
                 <hr>
-                <!--/TODO-->
             </div>
             <!--左侧导航栏-->
             
