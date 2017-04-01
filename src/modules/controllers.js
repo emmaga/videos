@@ -66,6 +66,9 @@
         function($http, $scope, $state, $stateParams, util, CONFIG) {
             var self = this;
             self.init = function() {
+                // TODO
+                self.defaultLang = util.getDefaultLangCode();
+                // TODO-END
 
                 // 上传页面加载页面url
                 self.uploadListUrl = '';
@@ -83,7 +86,10 @@
                 // 初始化上传列表对象
                 self.uploadList = new UploadLists();
 
-
+                // TODO
+                //获取音乐库列表
+                self.getList();
+                // TODO-END
             }
 
             self.gotoPage = function(pageName) {
@@ -105,9 +111,46 @@
                     self.showUploadList = false;
                     $state.go(pageName);
                 }
-                
-
             }
+            // TODO
+            // 获取音乐库列表
+            self.getList = function() {
+                self.loading = true;
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "getList",
+                    "LibID": 1
+                })
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('music', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                        console.log(msg)
+                        if (msg.length == 0) {
+                            self.noData = true;
+                            return;
+                        }
+                        self.List = msg;
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.loading = false;
+                });
+            }
+            //发送当前音乐库的ID
+            self.sendID = function (ID) {
+                $scope.app.maskParams.ID = ID;
+            }
+            // TODO-END
 
             self.logout = function(event) {
                 util.setParams('token', '');
@@ -1427,18 +1470,24 @@
             console.log('musicLiarbryController')
             var self = this;
             self.init = function() {
+                // TODO
+                self.ID = $scope.app.maskParams.ID;
+                // TODO-END
                 self.defaultLang = util.getDefaultLangCode();
                 self.getMusicList();
             }
-
-
 
             // 查询音乐列表
             self.getMusicList = function() {
                 self.loading = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "getMusicList"
+                    // TODO
+                    "action": "getMusicList",
+                    "lang": "zh-CN",
+                    "LibID": 1,
+                    "ID": self.ID
+                    // TODO-END
                 })
                 $http({
                     method: 'POST',
@@ -1447,12 +1496,14 @@
                 }).then(function successCallback(response) {
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                        console.log(msg.musicList)
-                        if (msg.musicList.length == 0) {
+                        // TODO
+                        console.log(msg)
+                        if (msg.length == 0) {
                             self.noData = true;
                             return;
                         }
-                        self.musicList = msg.musicList;
+                        self.musicList = msg;
+                        // TODO-END
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
                         $state.go('login');
@@ -1562,6 +1613,9 @@
                     "action": "addMusic",
                     "lang": "zh-CN",
                     "Music": {
+                        // TODO-END
+                        "??": self.musicInfo.libName,
+                        // TODO-END
                         "Seq": self.musicInfo.Seq,
                         "Name": self.musicInfo.Name,
                         "SingerName": self.musicInfo.SingerName,
@@ -1762,6 +1816,9 @@
                     "lang": "zh-CN",
                     "Music": {
                         "Seq": self.musicInfo.Seq,
+                        // TODO-END
+                        "??": self.musicInfo.libName,
+                        // TODO-END
 
                         "Name": self.musicInfo.Name,
                         "SingerName": self.musicInfo.SingerName,
