@@ -85,7 +85,7 @@
 
                 // 初始化上传列表对象
                 self.uploadList = new UploadLists();
-
+                self.getVideosList();
                 self.getList();
             }
 
@@ -114,6 +114,10 @@
                 $state.go('app.musicLibrary',{LibID:ID})
             }
 
+            self.goTOVideoLibrary = function(ID){
+                $state.go('app.editedList',{LibID:ID})
+            }
+
 
             // 获取音乐库列表
             self.getList = function() {
@@ -131,6 +135,35 @@
                     var msg = response.data;
                     if (msg.rescode == '200') {
                         self.musicLibList = msg.data;
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.loading = false;
+                });
+            }
+            // 获取音乐库列表
+            self.getVideosList = function() {
+                self.loading = true;
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "getLibList",
+                    "lang": "zh-CN"
+                })
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('movielib', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    console.log(msg)
+                    if (msg.rescode == '200') {
+                        self.videosLibList = msg.data;
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
                         $state.go('login');
@@ -516,9 +549,11 @@
 
                 $scope.arr.catrgoryArr = [];
                 $scope.arr.LocationArr = [];
-
+                self.stateParams = $stateParams;
                 self.defaultLang = util.getDefaultLangCode();
-                self.getTags();
+                self.getLocation();
+                self.getCategory();
+                self.getMovieList();
             }
 
             self.edit = function(movieID) {
@@ -527,10 +562,78 @@
             }
 
             // 获取 电影的 分类 产地
-            self.getTags = function () {
+            // self.getTags = function () {
+            //     var data = JSON.stringify({
+            //         "token": util.getParams('token'),
+            //         "action": "getTags"
+            //     })
+
+            //     $http({
+            //         method: 'POST',
+            //         url: util.getApiUrl('movie', '', 'server'),
+            //         data: data
+            //     }).then(function successCallback(response) {
+            //         var msg = response.data;
+            //         if (msg.rescode == '200') {
+            //             if (msg.CategoryList.length == 0) {
+            //                 self.noCategotyData = true;
+            //             } else {
+            //                 self.categoryList = msg.CategoryList;
+            //             }
+            //             if (msg.LocationList.length == 0) {
+            //                 self.noLocationData = true;
+            //             } else {
+            //                 self.locationList = msg.LocationList;
+            //             }
+            //         } else if (msg.rescode == "401") {
+            //             alert('访问超时，请重新登录');
+            //             $state.go('login');
+            //         } else {
+            //             alert(msg.rescode + ' ' + msg.errInfo);
+            //         }
+            //     }, function errorCallback(response) {
+            //         alert(response.status + ' 服务器出错');
+            //     }).finally(function(value) {
+            //         self.loading = false;
+            //     });
+            // }
+            self.getCategory = function() {
+
+                    var data = JSON.stringify({
+                        "action": "getCategoryList",
+                        "token": util.getParams('token')
+                    })
+
+                    $http({
+                        method: 'POST',
+                        url: util.getApiUrl('movie', '', 'server'),
+                        data: data
+                    }).then(function successCallback(response) {
+                        var msg = response.data;
+                        if (msg.rescode == '200') {
+                            if (msg.data.length == 0) {
+                                self.noCategotyData = true;
+                            } else {
+                                self.categoryList = msg.data;
+                            }
+                        } else if (msg.rescode == "401") {
+                            alert('访问超时，请重新登录');
+                            $state.go('login');
+                        } else {
+                            alert(msg.rescode + ' ' + msg.errInfo);
+                        }
+                    }, function errorCallback(response) {
+                        alert(response.status + ' 服务器出错');
+                    }).finally(function(value) {
+                        self.loading = false;
+                    });
+            }
+                
+                //获取电影的Location
+            self.getLocation = function() {
                 var data = JSON.stringify({
-                    "token": util.getParams('token'),
-                    "action": "getTags"
+                    "action": "getLocationList",
+                    "token": util.getParams('token')
                 })
 
                 $http({
@@ -540,15 +643,10 @@
                 }).then(function successCallback(response) {
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                        if (msg.CategoryList.length == 0) {
-                            self.noCategotyData = true;
-                        } else {
-                            self.categoryList = msg.CategoryList;
-                        }
-                        if (msg.LocationList.length == 0) {
+                        if (msg.data.length == 0) {
                             self.noLocationData = true;
                         } else {
-                            self.locationList = msg.LocationList;
+                            self.locationList = msg.data;
                         }
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
@@ -562,6 +660,7 @@
                     self.loading = false;
                 });
             }
+
             // 搜索条件 电影分类
             self.chooseCateory = function(id, value) {
                 if (value == true) {
@@ -598,9 +697,10 @@
                     counts: [],
                     getData: function (params) {
                         var data = {
-                            "action": "getMovieList",
+                            "action": "getList",
                             "token": util.getParams("token"),
-                            "keywords": self.keywords,
+                            // "keywords": self.keywords,
+                            "keywords": "",
                             "locationID":$scope.arr.LocationArr,
                             "categoryID":$scope.arr.catrgoryArr
                         }
@@ -613,11 +713,12 @@
                             url: util.getApiUrl('movie', 'shopList', 'server'),
                             data: data
                         }).then(function successCallback(data, status, headers, config) {
-                            if (data.data.total == 0) {
+
+                            if (data.data.data.Total == 0) {
                                 self.noData = true;
                             }
-                            params.total(data.data.total);
-                            return data.data.movieList;
+                            params.total(data.data.data.Total);
+                            return data.data.data.data;
                         }, function errorCallback(data, status, headers, config) {
                             alert(response.status + ' 服务器出错');
                         }).finally(function(value) {
@@ -639,13 +740,13 @@
                  }
                  var data = JSON.stringify({
                      "token": util.getParams('token'),
-                     "action": "delMovie",
-                     "lang": "zh-CN",
-                     "movieID": id
+                     "action": "unlink",
+                     "ID": id,
+                     'LibID':self.stateParams.LibID
                  })
                  $http({
                      method: 'POST',
-                     url: util.getApiUrl('movie', '', 'server'),
+                     url: util.getApiUrl('movielib', '', 'server'),
                      data: data
                  }).then(function successCallback(response) {
                      var msg = response.data;
@@ -1329,8 +1430,8 @@
                 self.loading = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "getMovieInfoByID",
-                    "movieID":self.maskParams.movieID
+                    "action": "get",
+                    "ID":self.maskParams.movieID
                 })
                 $http({
                     method: 'POST',
@@ -1340,7 +1441,7 @@
 
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                        self.movieInfo = msg;
+                        self.movieInfo = msg.data;
                         // 和上传 图片 的 数据 结构一致
                         var img = {};
                         img.img = {};

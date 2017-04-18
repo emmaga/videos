@@ -42,7 +42,7 @@
                 templateUrl: 'pages/notEditedList.html'
             })
             .state('app.editedList', {
-                url: '/editedList',
+                url: '/editedList?LibID',
                 templateUrl: 'pages/editedList.html'
             })
             .state('app.musicLibrary', {

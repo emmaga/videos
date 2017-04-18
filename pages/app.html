@@ -34,13 +34,21 @@
                     <i class="glyphicon glyphicon-import" style="font-size:14px"></i>&nbsp&nbsp待入库
                 </a>
                 <hr>
-                <a ng-click="app.gotoPage('app.editedList')" class="font-bold no-underline cursor-default">
+<!--                 <a ng-click="app.gotoPage('app.editedList')" class="font-bold no-underline cursor-default">
                     <i class="glyphicon glyphicon-film"></i>&nbsp&nbsp已入库
                 </a>
                 <hr>
+                <hr> -->
+
+                <a class="font-bold no-underline cursor-default"  data-toggle="collapse" data-target="#collapseExampleVideo" aria-expanded="false" aria-controls="collapseExample">
+                  <i class="glyphicon glyphicon-music"></i>&nbsp&nbsp视频库
+                </a>
+                <div class="collapse" id="collapseExampleVideo">
+                  <li class="well"  ng-click="app.goTOVideoLibrary(videoLib.ID)" ng-repeat="videoLib in app.videosLibList">
+                    {{videoLib.Name[app.defaultLang]}}
+                  </li>
+                </div>
                 <hr>
-
-
                 <a class="font-bold no-underline cursor-default"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                   <i class="glyphicon glyphicon-music"></i>&nbsp&nbsp音乐库
                 </a>
