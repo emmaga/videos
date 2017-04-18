@@ -558,7 +558,7 @@
 
             self.edit = function(movieID) {
                 $scope.app.maskUrl = "pages/editMovieInfo.html";
-                $scope.app.maskParams = {movieID:movieID};
+                $scope.app.maskParams = {movieID:movieID,LibID:self.stateParams.LibID};
             }
 
             // 获取 电影的 分类 产地
@@ -730,6 +730,7 @@
 
             self.addMoreMovie = function() {
                 $scope.app.maskUrl = "pages/addMoreMovie.html";
+                $scope.app.maskParams = {LibID:self.stateParams.LibID};
             }
 
             // 删除已入库电影
@@ -1074,9 +1075,10 @@
                 self.LocationArr = []; 
                 // 提交的多语言
                 self.movieInfo = {};
-
+                self.maskParams = $scope.app.maskParams;
                 self.uploadList = new UploadLists();
-                self.getTags();
+                self.getLocation();
+                self.getCategory();
             }
 
             self.cancel = function() {
@@ -1179,12 +1181,43 @@
                 }
             }
 
-            // 获取 电影的 分类 产地
-            self.getTags = function () {
+            self.getCategory = function() {
+
+                    var data = JSON.stringify({
+                        "action": "getCategoryList",
+                        "token": util.getParams('token')
+                    })
+
+                    $http({
+                        method: 'POST',
+                        url: util.getApiUrl('movie', '', 'server'),
+                        data: data
+                    }).then(function successCallback(response) {
+                        var msg = response.data;
+                        if (msg.rescode == '200') {
+                            if (msg.data.length == 0) {
+                                self.noCategotyData = true;
+                            } else {
+                                self.categoryList = msg.data;
+                            }
+                        } else if (msg.rescode == "401") {
+                            alert('访问超时，请重新登录');
+                            $state.go('login');
+                        } else {
+                            alert(msg.rescode + ' ' + msg.errInfo);
+                        }
+                    }, function errorCallback(response) {
+                        alert(response.status + ' 服务器出错');
+                    }).finally(function(value) {
+                        self.loading = false;
+                    });
+            }
+                
+                //获取电影的Location
+            self.getLocation = function() {
                 var data = JSON.stringify({
-                    "token": util.getParams('token'),
-                    "action": "getTags"
-                    // "lang": "zh-CN"
+                    "action": "getLocationList",
+                    "token": util.getParams('token')
                 })
 
                 $http({
@@ -1193,17 +1226,11 @@
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
-                    // 字段 错误
                     if (msg.rescode == '200') {
-                        if (msg.CategoryList.length == 0) {
-                            self.noCategotyData = true;
-                        } else {
-                            self.categoryList = msg.CategoryList;
-                        }
-                        if (msg.LocationList.length == 0) {
+                        if (msg.data.length == 0) {
                             self.noLocationData = true;
                         } else {
-                            self.locationList = msg.LocationList;
+                            self.locationList = msg.data;
                         }
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
@@ -1255,10 +1282,10 @@
                 self.saving = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "addMovie",
-                    "lang": "zh-CN",
-                    "Movie": {
-                        "Seq": self.movieInfo.Seq,
+                    "LibID": Number(self.maskParams.LibID),
+                    "action": "add",
+                    "Seq": self.movieInfo.Seq,
+                    "data": {
                         "PicSize": self.uploadList.data[0].img.size,
                         "Name": self.movieInfo.Name,
                         "Actor":self.movieInfo.Actor,
@@ -1271,15 +1298,16 @@
                         "Year": self.movieInfo.Year,
                         "Price": self.movieInfo.Price,
                         "Introduce": self.movieInfo.Introduce,
-                        "PicURL_ABS": self.uploadList.data[0].img.src
+                        "PicURL_ABS": self.uploadList.data[0].img.src,
+                        "Category": self.catrgoryArr,
+                        "Location": self.LocationArr
                     },
-                    "Category": self.catrgoryArr,
-                    "Location": self.LocationArr
+                    
                 })
 
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('movie', '', 'server'),
+                    url: util.getApiUrl('movielib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
@@ -1431,11 +1459,12 @@
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
                     "action": "get",
-                    "ID":self.maskParams.movieID
+                    "ID":self.maskParams.movieID,
+                    "LibID": self.maskParams.LibID
                 })
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('movie', '', 'server'),
+                    url: util.getApiUrl('movielib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
 
@@ -1449,9 +1478,9 @@
                         img.img.size = self.movieInfo.PicSize;
                         self.uploadList.data = [img];
                         // URL_ABS
-                        self.maskParams.URL_ABS = msg.URL_ABS;
+                        self.maskParams.URL_ABS = msg.data.URL_ABS;
                         // Duration
-                        self.maskParams.Duration = msg.Duration;
+                        self.maskParams.Duration = msg.data.Duration;
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
                         $state.go('login');
@@ -1514,11 +1543,11 @@
                 self.saving = true;
                 var data = JSON.stringify({
                     "token": util.getParams('token'),
-                    "action": "addMovie",
-                    "lang": "zh-CN",
-                    "movieID": self.maskParams.movieID,
-                    "Movie": {
-                        "Seq": self.movieInfo.Seq,
+                    "action": "edit",
+                    "ID": self.maskParams.movieID,
+                    "LibID": Number(self.maskParams.LibID),
+                    "Seq": self.movieInfo.Seq,
+                    "data": {
                         "Name": self.movieInfo.Name,
                         "PicSize": self.uploadList.data[0].img.size,
                         "Actor":self.movieInfo.Actor,
@@ -1531,14 +1560,14 @@
                         "Year": self.movieInfo.Year,
                         "Price": self.movieInfo.Price,
                         "Introduce": self.movieInfo.Introduce,
-                        "PicURL_ABS": self.uploadList.data[0].img.src
-                    },
-                    "Category": self.catrgoryArr,
-                    "Location": self.LocationArr
+                        "PicURL_ABS": self.uploadList.data[0].img.src,
+                        "Category": self.catrgoryArr,
+                        "Location": self.LocationArr
+                    }
                 })
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('movie', '', 'server'),
+                    url: util.getApiUrl('movielib', '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
