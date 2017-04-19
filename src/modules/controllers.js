@@ -833,7 +833,9 @@
                 self.movieInfo = {};
 
                 self.uploadList = new UploadLists();
-                self.getTags();
+                self.getCategory();
+                self.getLocation();
+
             }
 
             self.cancel = function() {
@@ -937,11 +939,50 @@
             }
 
             // 获取 电影的 分类 产地
-            self.getTags = function () {
+            // self.getTags = function () {
+            //     var data = JSON.stringify({
+            //         "token": util.getParams('token'),
+            //         "action": "getTags"
+            //         // "lang": "zh-CN"
+            //     })
+
+            //     $http({
+            //         method: 'POST',
+            //         url: util.getApiUrl('movie', '', 'server'),
+            //         data: data
+            //     }).then(function successCallback(response) {
+            //         var msg = response.data;
+            //         // 字段 错误
+            //         if (msg.rescode == '200') {
+            //             if (msg.CategoryList.length == 0) {
+            //                 self.noCategotyData = true;
+            //             } else {
+            //                 self.categoryList = msg.CategoryList;
+            //             }
+            //             if (msg.LocationList.length == 0) {
+            //                 self.noLocationData = true;
+            //             } else {
+            //                 self.locationList = msg.LocationList;
+            //             }
+            //         } else if (msg.rescode == "401") {
+            //             alert('访问超时，请重新登录');
+            //             $state.go('login');
+            //         } else {
+            //             alert(msg.rescode + ' ' + msg.errInfo);
+            //         }
+            //     }, function errorCallback(response) {
+            //         alert(response.status + ' 服务器出错');
+            //     }).finally(function(value) {
+            //         self.loading = false;
+            //     });
+            // }
+
+
+            //获取电影的Category
+            self.getCategory = function () {
                 var data = JSON.stringify({
-                    "token": util.getParams('token'),
-                    "action": "getTags"
-                    // "lang": "zh-CN"
+                    "action": "getCategoryList",
+                    "token": util.getParams('token')
                 })
 
                 $http({
@@ -950,17 +991,11 @@
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
-                    // 字段 错误
                     if (msg.rescode == '200') {
-                        if (msg.CategoryList.length == 0) {
+                        if (msg.data.length == 0) {
                             self.noCategotyData = true;
                         } else {
-                            self.categoryList = msg.CategoryList;
-                        }
-                        if (msg.LocationList.length == 0) {
-                            self.noLocationData = true;
-                        } else {
-                            self.locationList = msg.LocationList;
+                            self.categoryList = msg.data;
                         }
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
@@ -974,6 +1009,43 @@
                     self.loading = false;
                 });
             }
+            //获取电影的Location
+            self.getLocation = function () {
+                var data = JSON.stringify({
+                    "action": "getLocationList",
+                    "token": util.getParams('token')
+                })
+
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('movie', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                        if (msg.data.length == 0) {
+                            self.noLocationData = true;
+                        } else {
+                            self.locationList = msg.data;
+                        }
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.loading = false;
+                });
+            }
+
+
+
+
+
+
             // 编辑电影分类
             self.chooseCateory = function(id, value) {
                 if (value == true) {
