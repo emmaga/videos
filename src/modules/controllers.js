@@ -546,10 +546,10 @@
             self.init = function() {
                 // 选中分类
                 $scope.arr = {};
-
                 $scope.arr.catrgoryArr = [];
                 $scope.arr.LocationArr = [];
                 self.stateParams = $stateParams;
+                self.maskParams = $scope.app.maskParams;
                 self.defaultLang = util.getDefaultLangCode();
                 self.getLocation();
                 self.getCategory();
@@ -700,6 +700,7 @@
                             "action": "getList",
                             "token": util.getParams("token"),
                             // "keywords": self.keywords,
+                            'LibID': Number(self.stateParams.LibID),
                             "keywords": "",
                             "locationID":$scope.arr.LocationArr,
                             "categoryID":$scope.arr.catrgoryArr
@@ -710,7 +711,7 @@
                         data = JSON.stringify(data);
                         return $http({
                             method: $filter('ajaxMethod')(),
-                            url: util.getApiUrl('movie', 'shopList', 'server'),
+                            url: util.getApiUrl('movielib', 'shopList', 'server'),
                             data: data
                         }).then(function successCallback(data, status, headers, config) {
 
