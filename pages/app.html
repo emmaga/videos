@@ -41,23 +41,14 @@
                 <hr> -->
                
                 <a class="font-bold no-underline cursor-default"  data-toggle="collapse" data-target="#collapseExampleVideo" aria-expanded="false" aria-controls="collapseExample" >
-                <!-- ng-click="app.goTOVideoLibrary()" -->
                     <i class="glyphicon glyphicon-film"></i>&nbsp&nbsp视频库
                 </a>
                 <div class="collapse" id="collapseExampleVideo">
-                    <ul class="well">
-                        <a class="well font-bold no-underline cursor-default" data-toggle="collapse" data-target="#collapseExampleVideoTopic" aria-expanded="false" aria-controls="collapseExample" style="border: none;"><i class="glyphicon glyphicon-film"></i>&nbsp&nbsp专题大片</a>
-                        <div class="collapse" id="collapseExampleVideoTopic" style="margin-top: 40px;">
-                            <li class="well"  ng-click="app.goTOVideoLibrary(videoLib.ID)" ng-repeat="videoLib in app.videosLibList" style="margin-bottom: 0;">{{videoLib.Name[app.defaultLang]}}</li>
-                        </div>
-                    </ul>
                     <li class="well"  ng-click="app.goTOVideoLibrary(videoLib.ID)" ng-repeat="videoLib in app.videosLibList">{{videoLib.Name[app.defaultLang]}}</li>
                 </div>
-                
-                
+
                 <hr>
 
-           
                 <a class="font-bold no-underline cursor-default"  data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     <i class="glyphicon glyphicon-music"></i>&nbsp&nbsp音乐库
                 </a>
@@ -66,9 +57,11 @@
                 </div>
 
                 <hr>
-               
 
-                
+                <a class="font-bold no-underline cursor-default" data-toggle="collapse" data-target="#collapseExampleVideoTopic" aria-expanded="false" aria-controls="collapseExample"><i class="glyphicon glyphicon-film"></i>&nbsp&nbsp专题大片</a>
+                <div class="collapse" id="collapseExampleVideoTopic">
+                    <li class="well"  ng-click="app.goTOVideoLibrary(videoLib.ID)" ng-repeat="videoLib in app.videosLibList">{{videoLib.Name[app.defaultLang]}}</li>
+                </div>
             </div>
             <!--左侧导航栏-->
             
