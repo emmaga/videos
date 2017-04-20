@@ -793,6 +793,8 @@
                 // 提交的多语言
                 self.movieInfo = {};
 
+                self.videoLibID = {};
+
                 self.uploadList = new UploadLists();
                 self.getCategory();
                 self.getLocation();
@@ -807,8 +809,6 @@
             self.addCoverImg = function() {
                 self.uploadList.uploadFile($scope.myCoverImg, self.uploadList);
             }
-
-            self.videoLibID = {};
 
             // 获取视频库列表
             self.getVideosList = function() {
@@ -1066,9 +1066,10 @@
                 }).then(function successCallback(response) {
                     var msg = response.data;
                     if (msg.rescode == '200') {
-                       
                         alert('添加成功')
+
                         self.cancel();
+
                         $state.reload('app.notEditedList')
                     } else if (msg.rescode == "401") {
                         alert('访问超时，请重新登录');
