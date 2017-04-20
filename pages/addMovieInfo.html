@@ -17,7 +17,16 @@
                                 {{videosLib.Name[addMovieInfo.defaultLang]}}
                             </span>
                         </div>
-                        {{addMovieInfo.videoLibID}}
+
+                        <!-- <div class="form-group">
+                            <label>放入专题大片库</label>
+                            <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
+                            <span ng-repeat="movieTopic in addMovieInfo.movieTopciLibList track by $index">
+                                <input type="radio" name='videoLib' value='{{movieTopic.ID}}' ng-model="addMovieInfo.movieTopicID">
+                                {{movieTopic.Name[addMovieInfo.defaultLang]}}
+                            </span>
+                        </div> -->
+
                         <hr>
 
                         <div class="form-group" >

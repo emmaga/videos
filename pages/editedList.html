@@ -4,6 +4,7 @@
             <i class="glyphicon glyphicon-film"></i>
             已入库
         </strong>
+        <strong>{{}}</strong>
     </a>
     <hr>
     
@@ -53,15 +54,17 @@
         <tbody>
             <div ng-show="editedList.loading">loading...</div>
             <tr ng-repeat="movie in $data track by $index">
-                <td data-title="'序号'" >{{movie.Seq}}</td>
+
+            !!{{movie}}!!
+            ??{{movie.Seq}}??
+            @@{{movie.Name}}@@
+            ##{{category[editedList.defaultLang]}}##
+            %%{{location[editedList.defaultLang]}}%%
+                <td data-title="'序号'" >{{movie}}</td>
+                <!-- <td data-title="'序号'" >{{movie.Seq}}</td> -->
                 <td data-title="'名称'" >{{movie.Name[editedList.defaultLang]}}</td>
                 <td data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
                 <td data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td>
-<!-- 
-                <td data-title="'类型'" ><span ng-repeat="category in editedList.categoryList track by $index"> {{category[editedList.defaultLang]}}</span> </td>
-                <td data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td> -->
-
-
 
 
 
