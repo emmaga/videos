@@ -66,9 +66,9 @@
         function($http, $scope, $state, $stateParams, util, CONFIG) {
             var self = this;
             self.init = function() {
-                // TODO
+                
                 self.defaultLang = util.getDefaultLangCode();
-                // TODO-END
+            
 
                 // 上传页面加载页面url
                 self.uploadListUrl = '';
@@ -147,7 +147,7 @@
                     self.loading = false;
                 });
             }
-            // 获取音乐库列表
+            // 获取视频库列表
             self.getVideosList = function() {
                 self.loading = true;
                 var data = JSON.stringify({
@@ -180,8 +180,7 @@
             self.sendID = function (ID) {
                 $scope.app.maskParams.ID = ID;
             }
-            // TODO-END
-
+        
             self.logout = function(event) {
                 util.setParams('token', '');
                 $state.go('login');
@@ -553,7 +552,9 @@
                 self.defaultLang = util.getDefaultLangCode();
                 self.getLocation();
                 self.getCategory();
-                self.getMovieList();
+                if (self.stateParams.LibID) {
+                    self.getMovieList();
+                }
             }
 
             self.edit = function(movieID) {
@@ -714,10 +715,10 @@
                             url: util.getApiUrl('movielib', 'shopList', 'server'),
                             data: data
                         }).then(function successCallback(data, status, headers, config) {
-
-                            if (data.data.data.Total == 0) {
+                            if(data.data.data.Total == 0) {
                                 self.noData = true;
-                            }
+                                return;
+                            };
                             params.total(data.data.data.Total);
                             return data.data.data.data;
                         }, function errorCallback(data, status, headers, config) {
