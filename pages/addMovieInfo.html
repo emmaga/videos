@@ -13,19 +13,10 @@
                             <label>放入视频库</label>
                             <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
                             <span ng-repeat="videosLib in addMovieInfo.videosLibList track by $index">
-                                <input type="radio" name='videoLib' value='{{videosLib.ID}}' ng-model="addMovieInfo.videoLibID">
+                                <input type="radio" name='videoLib' value='{{videosLib.ID}}' ng-model="addMovieInfo.videoLibID" >
                                 {{videosLib.Name[addMovieInfo.defaultLang]}}
                             </span>
                         </div>
-
-                        <!-- <div class="form-group">
-                            <label>放入专题大片库</label>
-                            <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
-                            <span ng-repeat="movieTopic in addMovieInfo.movieTopciLibList track by $index">
-                                <input type="radio" name='videoLib' value='{{movieTopic.ID}}' ng-model="addMovieInfo.movieTopicID">
-                                {{movieTopic.Name[addMovieInfo.defaultLang]}}
-                            </span>
-                        </div> -->
 
                         <hr>
 

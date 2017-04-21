@@ -1133,6 +1133,10 @@
                     alert('请上传图片');
                     return;
                 }
+                if (JSON.stringify(self.videoLibID)=='{}') {
+                    alert('请选择视频库');
+                    return;
+                }
                 self.saving = true;
                 var data = JSON.stringify({
                     "lang": "zh-CN",
