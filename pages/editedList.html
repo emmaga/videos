@@ -46,25 +46,19 @@
             <tr>
                 <th>序号</th>
                 <th>名称</th>
-                <th>类型</th>
-                <th>产地</th>
+                <th ng-show="editedList.video">类型</th>
+                <th ng-show="editedList.video">产地</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             <div ng-show="editedList.loading">loading...</div>
             <tr ng-repeat="movie in $data track by $index">
-
-            !!{{movie}}!!
-            ??{{movie.Seq}}??
-            @@{{movie.Name}}@@
-            ##{{category[editedList.defaultLang]}}##
-            %%{{location[editedList.defaultLang]}}%%
-                <td data-title="'序号'" >{{movie}}</td>
-                <!-- <td data-title="'序号'" >{{movie.Seq}}</td> -->
+                <!-- <td data-title="'序号'" >{{movie}}</td> -->
+                <td data-title="'序号'" >{{movie.Seq}}</td>
                 <td data-title="'名称'" >{{movie.Name[editedList.defaultLang]}}</td>
-                <td data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
-                <td data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td>
+                <td ng-show="editedList.video" data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
+                <td ng-show="editedList.video" data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td>
 
 
 

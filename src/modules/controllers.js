@@ -115,22 +115,17 @@
                 $state.go('app.musicLibrary',{LibID:ID})
             }
 
-            self.goTOVideoLibrary = function(ID,movieTopic){
-                $scope.app.movieTopic = movieTopic;
+            self.goTOVideoLibrary = function(ID,video){
+                // $scope.app.video = (video=='true')? true || false;
+                if(video=='true') {
+                    $scope.app.video = true
+                }else{
+                    $scope.app.video = false
+                }
+                // (video=='true') ? ($scope.app.video = true) || ($scope.app.video = false);
                 $state.go('app.editedList',{LibID:ID}); 
             }
 
-            // self.goToMovieTopic = function(ID,movieTopic) {
-            //     $scope.app.movieTopic = movieTopic;
-            //     $state.go('app.editedList',{LibID:ID}); 
-            // }
-
-            // self.notEditedList = function() {
-            //     $scope.app.movieTopic = movieTopic;
-            //     $state.go('app.notEditedList'); 
-            // }
-
-            
 
             // 获取音乐库列表
             self.getList = function() {
@@ -589,7 +584,7 @@
                 $scope.arr.LocationArr = [];
                 self.stateParams = $stateParams;//列表信息
                 self.maskParams = $scope.app.maskParams;
-                self.movieTopic = $scope.app.movieTopic;//专题大片判断条件
+                self.video = $scope.app.video;//专题大片判断条件
                 self.defaultLang = util.getDefaultLangCode();
                 self.getLocation();
                 self.getCategory();
@@ -600,7 +595,7 @@
                 $scope.app.maskUrl = "pages/editMovieInfo.html";
                 $scope.app.maskParams = {movieID:movieID,LibID:self.stateParams.LibID};
             }
-
+            //获取电影的Category
             self.getCategory = function() {
 
                     var data = JSON.stringify({
@@ -700,30 +695,7 @@
                 }, {
                     counts: [],
                     getData: function (params) {
-                        if(self.movieTopic=='ture'){
-                            //专题大片
-                            var data = {
-                            "action": "getList",
-                            "token": util.getParams("token"),
-                            'LibID': Number(self.stateParams.LibID)
-                            }
-                            data = JSON.stringify(data);
-                            return $http({
-                                method: $filter('ajaxMethod')(),
-                                url: util.getApiUrl('movietopiclib', 'shopList', 'server'),
-                                data: data
-                            }).then(function successCallback(data, status, headers, config) {
-                                if(data.data.data.Total == 0) {
-                                    self.noData = true;
-                                };
-                                params.total(data.data.Total);
-                                return data.data.data.data;
-                            }, function errorCallback(data, status, headers, config) {
-                                alert(response.status + ' 服务器出错');
-                            }).finally(function(value) {
-                                self.loading = false;
-                            })
-                        }else {
+                        if(self.video){
                             //视频库
                             var data = {
                             "action": "getList",
@@ -753,47 +725,43 @@
                             }).finally(function(value) {
                                 self.loading = false;
                             })
-                        
+                            
+                        }else {
+                            //专题大片
+                            var data = {
+                            "action": "getList",
+                            "token": util.getParams("token"),
+                            'LibID': Number(self.stateParams.LibID)
+                            }
+                            data = JSON.stringify(data);
+                            return $http({
+                                method: $filter('ajaxMethod')(),
+                                url: util.getApiUrl('movietopiclib', 'shopList', 'server'),
+                                data: data
+                            }).then(function successCallback(data, status, headers, config) {
+                                if(data.data.data.Total == 0) {
+                                    self.noData = true;
+                                };
+                                //专题大片返回数据为字符串，将字符串转换JSON对象
+                                for(var i = 0; i < data.data.data.data.length; i++) {
+                                    data.data.data.data[i].Actor = JSON.parse(data.data.data.data[i].Actor);
+                                    data.data.data.data[i].Director = JSON.parse(data.data.data.data[i].Director);
+                                    data.data.data.data[i].Introduce = JSON.parse(data.data.data.data[i].Introduce);
+                                    data.data.data.data[i].Name = JSON.parse(data.data.data.data[i].Name);
+                                    console.log(data.data.data.data);
+                                }
+                                 params.total(data.data.Total);
+                                return data.data.data.data;
+                            }, function errorCallback(data, status, headers, config) {
+                                alert(response.status + ' 服务器出错');
+                            }).finally(function(value) {
+                                self.loading = false;
+                            })
                         }
-                        
                     }
                 });
             }
-            // // 获取专题大片电影列表
-            // self.getMovieTopicList = function(){
-            //     self.loading = true;
-            //     self.noData = false;
-            //     self.tableParams = new NgTableParams({
-            //         page: 1,
-            //         count: 15,
-            //         url: ''
-            //     }, {
-            //         counts: [],
-            //         getData: function (params) {
-            //             var data = {
-            //                 "action": "getList",
-            //                 "token": util.getParams("token"),
-            //                 'LibID': Number(self.stateParams.LibID)
-            //             }
-            //             data = JSON.stringify(data);
-            //             return $http({
-            //                 method: $filter('ajaxMethod')(),
-            //                 url: util.getApiUrl('movietopiclib', 'shopList', 'server'),
-            //                 data: data
-            //             }).then(function successCallback(data, status, headers, config) {
-            //                 if(data.data.data.Total == 0) {
-            //                     self.noData = true;
-            //                 };
-            //                 params.total(data.data.Total);
-            //                 return data.data.data;
-            //             }, function errorCallback(data, status, headers, config) {
-            //                 alert(response.status + ' 服务器出错');
-            //             }).finally(function(value) {
-            //                 self.loading = false;
-            //             })
-            //         }
-            //     });
-            // }
+
 
             self.addMoreMovie = function() {
                 $scope.app.maskUrl = "pages/addMoreMovie.html";
@@ -831,8 +799,6 @@
                      alert(response.status + ' 服务器出错');
                  }).finally(function(value) {
                  });
-
-
             }
 
             
