@@ -858,6 +858,8 @@
                 self.defaultLang = util.getDefaultLangCode();
 
                 self.maskParams = $scope.app.maskParams;//task对象
+                console.log('self.maskParams');
+                console.log(self.maskParams);
                 // 电影分类 初始化 数组 电影产地 初始化 数组
                 self.catrgoryArr = []; 
                 self.LocationArr = []; 
@@ -1142,6 +1144,7 @@
                     "token": util.getParams('token'),
                     "LibID": self.videoLibID,
                     "action": "add",
+                    "TaskID": self.maskParams.ID,
                     "data": {
                         "Category": self.catrgoryArr,
                         "Name": self.movieInfo.Name,
