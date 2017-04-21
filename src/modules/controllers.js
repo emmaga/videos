@@ -759,23 +759,17 @@
 
             self.addMoreMovie = function() {
                 $scope.app.maskUrl = self.video ? "pages/addMoreMovie.html" : "pages/addMoreMovieTopic.html";
-
-                // if(self.video) {
-                //     // 视频库
-                //     $scope.app.maskUrl = "pages/addMoreMovie.html";
-                // }else{
-                //     // 专题大片
-                //     $scope.app.maskUrl = "pages/addMoreMovie.html";
-                // }
                 $scope.app.maskParams = {LibID:self.stateParams.LibID};
             }
 
             // 删除已入库电影
-            self.delMovie = function(id){
+            self.delMovie = function(id,video){
                  var flag = confirm('确定删除？');
                  if (!flag) {
                     return;
                  }
+
+                 var movieUrl = video ? 'movielib' : 'movietopiclib';
                  var data = JSON.stringify({
                      "token": util.getParams('token'),
                      "action": "unlink",
@@ -784,7 +778,7 @@
                  })
                  $http({
                      method: 'POST',
-                     url: util.getApiUrl('movielib', '', 'server'),
+                     url: util.getApiUrl(movieUrl, '', 'server'),
                      data: data
                  }).then(function successCallback(response) {
                      var msg = response.data;
@@ -799,8 +793,7 @@
                      }
                  }, function errorCallback(response) {
                      alert(response.status + ' 服务器出错');
-                 }).finally(function(value) {
-                 });
+                 }).finally(function(value) {});
             }
 
             
