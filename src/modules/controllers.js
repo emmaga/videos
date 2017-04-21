@@ -695,7 +695,7 @@
                 }, {
                     counts: [],
                     getData: function (params) {
-                        if(self.video){
+                        if(self.video == undefined || self.video == true){
                             //视频库
                             var data = {
                             "action": "getList",
