@@ -115,14 +115,9 @@
                 $state.go('app.musicLibrary',{LibID:ID})
             }
 
-            self.goTOVideoLibrary = function(ID,video){
-                // $scope.app.video = (video=='true')? true || false;
-                if(video=='true') {
-                    $scope.app.video = true
-                }else{
-                    $scope.app.video = false
-                }
-                // (video=='true') ? ($scope.app.video = true) || ($scope.app.video = false);
+            self.goTOVideoLibrary = function(ID,video,LibName){
+                $scope.app.LibName = LibName;
+                $scope.app.video = (video=='true') ? true : false;
                 $state.go('app.editedList',{LibID:ID}); 
             }
 
@@ -582,7 +577,8 @@
                 $scope.arr = {};
                 $scope.arr.catrgoryArr = [];
                 $scope.arr.LocationArr = [];
-                self.stateParams = $stateParams;//列表信息
+                self.stateParams = $stateParams;//列表ID
+                self.LibName = $scope.app.LibName;//视频库名称
                 self.maskParams = $scope.app.maskParams;
                 self.video = $scope.app.video;//专题大片判断条件
                 self.defaultLang = util.getDefaultLangCode();
