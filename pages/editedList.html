@@ -23,7 +23,7 @@
 
     <hr class="break-space">
 
-    <div class="form-group">
+    <div ng-show="editedList.video" class="form-group">
         <label>类型</label><br>
         <div ng-show="editedList.noCategotyData">查无数据</div>
         <span ng-repeat="category in editedList.categoryList track by $index">
@@ -31,7 +31,7 @@
         </span>
     </div>
 
-    <div class="form-group">
+    <div ng-show="editedList.video" class="form-group">
         <label>产地</label><br>
         <div ng-show="editedList.noLocationData">查无数据</div>
         <span ng-repeat="location in editedList.locationList track by $index">
@@ -63,7 +63,7 @@
 
 
                 <td data-title="'操作'">
-                    <button ng-click="editedList.edit(movie.ID)" class="btn btn-xs btn-default" title="编辑">
+                    <button ng-show="editedList.video" ng-click="editedList.edit(movie.ID)" class="btn btn-xs btn-default" title="编辑">
                         <i class="glyphicon glyphicon-pencil"></i>
                     </button>
                     <button ng-click="editedList.delMovie(movie.ID)" class="btn btn-xs btn-default" title="删除">
