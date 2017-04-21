@@ -1,0 +1,52 @@
+<!--fix my css-->
+<div class="modal"  ng-controller="addMoreMovieTopicController as aMM" ng-init="aMM.init()">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="aMM.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">添加影片</h4>
+            </div>
+            <form name="movieForm" novalidate ng-submit="movieForm.$valid && aMM.addMovie()">
+                <div class="modal-body">
+                    <hr class="break-space">
+                    <table class="table table-hover table-condensed" ng-table="aMM.tableParams">
+                        <thead>
+                            <tr>
+                                <th>选择</th>
+                                <th>ID</th>
+                                <th>名称</th>
+                                <th>类型</th>
+                                <th>产地</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <div ng-show="aMM.loading">loading...</div>
+                            <tr ng-repeat="movie in $data track by $index">
+                                <td data-title="'选择'">
+                                    <input type="radio" name='movie' value='{{movie.ID}}' ng-model="aMM.selectMovie" >
+                                </td>
+                                <td data-title="'ID'" >{{movie.ID}}</td>
+                                <td data-title="'名称'" >{{movie.Name[aMM.defaultLang]}}</td>
+                                <td data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[aMM.defaultLang]}}</span></td>
+                                <td data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[aMM.defaultLang]}}</span> </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div ng-show="aMM.noData">查无数据</div>
+                    <hr>
+                    <div class="form-group">
+                        <label>排序</label>
+                        <input type="number" class="form-control" ng-model="aMM.movieInfo.Seq" required>
+                    </div>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <a ng-click="aMM.cancel()" class="btn">取消</a>
+                    <button class="btn btn-primary" type="submit" ng-disabled="movieForm.$invalid || aMM.saving ">保存</button>
+                </div>
+            </form>  
+        </div>
+    </div>
+
+</div>

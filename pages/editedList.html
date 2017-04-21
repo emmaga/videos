@@ -59,11 +59,8 @@
                 <td data-title="'名称'" >{{movie.Name[editedList.defaultLang]}}</td>
                 <td ng-show="editedList.video" data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
                 <td ng-show="editedList.video" data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td>
-
-
-
                 <td data-title="'操作'">
-                    <button ng-show="editedList.video" ng-click="editedList.edit(movie.ID)" class="btn btn-xs btn-default" title="编辑">
+                    <button ng-show="editedList.video"ng-click="editedList.edit(movie.ID)" class="btn btn-xs btn-default" title="编辑">
                         <i class="glyphicon glyphicon-pencil"></i>
                     </button>
                     <button ng-click="editedList.delMovie(movie.ID)" class="btn btn-xs btn-default" title="删除">
