@@ -39,7 +39,7 @@
                     <i class="glyphicon glyphicon-film"></i>&nbsp&nbsp视频库
                 </a>
                 <div class="collapse" id="collapseExampleVideo">
-                    <li class="well"  ng-click="app.goTOVideoLibrary(videoLib.ID,'true',videoLib.Name[app.defaultLang])" ng-repeat="videoLib in app.videosLibList">{{videoLib.Name[app.defaultLang]}}</li>
+                    <li class="well"  ng-click="app.goTOVideoLibrary(videoLib.ID,'true',videoLib.Name)" ng-repeat="videoLib in app.videosLibList">{{videoLib.Name[app.defaultLang]}}</li>
                 </div>
 
                 <hr>
@@ -55,7 +55,7 @@
 
                 <a class="font-bold no-underline cursor-default" data-toggle="collapse" data-target="#collapseExampleMovieTopic" aria-expanded="false" aria-controls="collapseExample"><i class="glyphicon glyphicon-film"></i>&nbsp&nbsp专题大片</a>
                 <div class="collapse" id="collapseExampleMovieTopic">
-                    <li class="well"  ng-repeat="movieTopic in app.movieTopciLibList" ng-click="app.goTOVideoLibrary(movieTopic.ID,'false',movieTopic.Name[app.defaultLang])">{{movieTopic.Name[app.defaultLang]}}</li>
+                    <li class="well"  ng-repeat="movieTopic in app.movieTopciLibList" ng-click="app.goTOVideoLibrary(movieTopic.ID,'false',movieTopic.Name)">{{movieTopic.Name[app.defaultLang]}}</li>
                 </div>
             </div>
             <!--左侧导航栏-->

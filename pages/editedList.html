@@ -4,7 +4,7 @@
             <i class="glyphicon glyphicon-film"></i>
             已入库
         </strong>
-        <strong>{{editedList.LibName}}</strong>
+        <strong>{{editedList.LibName[editedList.defaultLang]}}</strong>
     </a>
     <hr>
     
@@ -40,6 +40,7 @@
     </div>
     <hr class="break-space">
     <button ng-click="editedList.addMoreMovie()" class="btn btn-default">添加</button>
+    <button ng-show="editedList.MovieTopic" ng-click="editedList.editMovieTopicLibInfo()" class="btn btn-primary">编辑专题片库信息</button>
     <hr class="break-space">
     <table class="table table-hover table-condensed" ng-table="editedList.tableParams">
         <thead>
@@ -49,6 +50,7 @@
                 <th ng-show="editedList.video">类型</th>
                 <th ng-show="editedList.video">产地</th>
                 <th ng-show="editedList.video">操作</th>
+                <th ng-show="editedList.MovieTopic">删除</th>
             </tr>
         </thead>
         <tbody>
@@ -60,7 +62,7 @@
                 <td ng-show="editedList.video" data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
                 <td ng-show="editedList.video" data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td>
                 <td data-title="'操作'">
-                    <button ng-show="editedList.video"ng-click="editedList.edit(movie.ID)" class="btn btn-xs btn-default" title="编辑">
+                    <button ng-show="editedList.video" ng-click="editedList.edit(movie.ID)" class="btn btn-xs btn-default" title="编辑">
                         <i class="glyphicon glyphicon-pencil"></i>
                     </button>
                     <button ng-click="editedList.delMovie(movie.ID,editedList.video)" class="btn btn-xs btn-default" title="删除">

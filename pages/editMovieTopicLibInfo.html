@@ -1,0 +1,44 @@
+<div class="modal" ng-controller="editMovieTopicLibInfoController as editMovieInfo" ng-init="editMovieInfo.init()">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="editMovieInfo.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">
+                    <span style="color: #337ab7; font-weight: 600; margin-left: 0.5em;margin-right: 0.5em;">{{editMovieInfo.LibName[editMovieInfo.defaultLang]}}</span>
+                    基本信息
+                </h4>
+            </div>
+            <div ng-show="editMovieInfo.loading">Loading...</div>
+            <form name="movieForm" novalidate ng-submit="movieForm.$valid && editMovieInfo.editMovieTopicLibInfo()">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>封面</label>
+                        <br>
+                        <input type="file" file-model="myCoverImg" data-e="none" required>
+                        <br>
+                        <div ng-repeat="img in editMovieInfo.uploadList.data">
+                            <img width="100%" src="{{img.img.src}}">
+                            上传进度：{{img.img.percentComplete}}
+                        </div>
+                        <hr class="break-space">
+                        <div ng-click="editMovieInfo.addCoverImg()" class="btn btn-primary">上传</div>
+                    </div>
+                    <hr>
+                    <label>图片大小</label>
+                    <h5>{{editMovieInfo.uploadList.data[0].img.size}}</h5>
+                    <hr>
+                    <label>BG_PicURL:</label>
+                    <h5 style="word-break:break-all">{{editMovieInfo.uploadList.data[0].img.PicURL}}</h5>
+                    <hr>
+                    <label>BG_PicURL_ABS:</label>
+                    <h5 style="word-break:break-all">{{editMovieInfo.uploadList.data[0].img.src}}</h5>
+                </div>
+                <div class="modal-footer">
+                    <a ng-click="editMovieInfo.cancel()" class="btn">取消</a>
+                    <button class="btn btn-primary" type="submit" ng-disabled="movieForm.$invalid || editMovieInfo.saving ">保存修改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

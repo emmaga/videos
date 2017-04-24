@@ -573,6 +573,8 @@
             console.log('editedListController')
             var self = this;
             self.init = function() {
+                self.editLangs = util.getParams('editLangs')
+                self.defaultLang = util.getDefaultLangCode();
                 // 选中分类
                 $scope.arr = {};
                 $scope.arr.catrgoryArr = [];
@@ -580,7 +582,8 @@
                 self.stateParams = $stateParams;//列表ID
                 self.LibName = $scope.app.LibName;//视频库名称
                 self.maskParams = $scope.app.maskParams;
-                self.video = $scope.app.video;//专题大片判断条件
+                self.video = $scope.app.video;//视频库判断条件
+                self.MovieTopic = !($scope.app.video);//专题大片判断条件
                 self.defaultLang = util.getDefaultLangCode();
                 self.getLocation();
                 self.getCategory();
@@ -591,6 +594,15 @@
                 $scope.app.maskUrl = "pages/editMovieInfo.html";
                 $scope.app.maskParams = {movieID:movieID,LibID:self.stateParams.LibID};
             }
+
+            // 编辑专题大片库基本信息
+            self.editMovieTopicLibInfo = function() {
+                $scope.app.maskUrl = "pages/editMovieTopicLibInfo.html";
+                $scope.app.maskParams = {LibID: self.stateParams.LibID, LibName: self.LibName};
+            }
+
+
+
             //获取电影的Category
             self.getCategory = function() {
 
@@ -1903,7 +1915,248 @@
                 });
             }
         }
-    ])    
+    ]) 
+    // 编辑专题大片库基本信息
+    .controller('editMovieTopicLibInfoController', ['$http', '$scope', '$state', '$filter', '$stateParams', 'util', 'CONFIG',
+        function($http, $scope, $state, $filter, $stateParams, util, CONFIG) {
+            console.log('editMovieTopicLibInfoController')
+            var self = this;
+            self.init = function() {
+                self.editLangs = util.getParams('editLangs')
+                self.defaultLang = util.getDefaultLangCode();
+                self.maskParams = $scope.app.maskParams;
+                self.LibName = self.maskParams.LibName;//专题大片库名称
+                // 电影分类 初始化 数组 电影产地 初始化 数组
+                self.catrgoryArr = []; 
+                self.LocationArr = []; 
+                // 提交的多语言
+                self.movieInfo = {};
+                self.MovieTopicLibInfo = {};
+
+                self.uploadList = new UploadLists();
+                // 获取专题片库信息
+                // self.getMovieTopicList();
+                self.getMovieInfo();
+            }
+
+            self.cancel = function() {
+                $scope.app.maskUrl = "";
+            }
+
+            // 上传图片
+            self.addCoverImg = function() {
+                self.uploadList.uploadFile($scope.myCoverImg, self.uploadList);
+            }
+
+            function UploadLists() {
+                this.data = [
+                ];
+                this.maxId = 0;
+            }
+
+            UploadLists.prototype = {
+                add: function(img) {
+                    this.data.push({"img": img, "id": this.maxId});
+                    return this.maxId;
+                },
+                changeImg: function(img){
+                    // 只允许 上传 一张图片
+                    this.data =[];
+                    this.data.push({"img": img, "id": this.maxId});
+                    return this.maxId;
+                },
+                setPercentById: function(type, id, percentComplete) {
+                    for(var i =0; i < this.data.length; i++) {
+                        if(this.data[i].id == id) {
+                            this.data[i][type].percentComplete = percentComplete;
+                            break;
+                        }
+                    }
+                },
+                setSrcSizeById: function(type, id, src, size) {
+                    for(var i =0; i < this.data.length; i++) {
+                        if(this.data[i].id == id) {
+                            this.data[i][type].src = src;
+                            this.data[i][type].size = size;
+                            this.data[i][type].PicURL = '/Video/resource/' + src.split('/').pop();
+
+                            self.MovieTopicLibInfo.src = src;
+                            self.MovieTopicLibInfo.PicURL = this.data[i][type].PicURL;
+                            self.MovieTopicLibInfo.PicSize = size;
+
+                            break;
+                        }
+                    }
+                },
+                deleteById: function(id) {
+                    var l = this.data;
+                    for(var i = 0; i <l.length; i++) {
+                        if (l[i].id == id) {
+                            // 如果正在上传，取消上传
+                            // 图片
+                            if(l[i].img.percentComplete < 100 && l[i].img.percentComplete != '失败') {
+                                l[i].video.xhr.abort();
+                            }
+                            
+                            // 删除data
+                            l.splice(i, 1);
+                            break;
+                        }
+                    }
+                },
+                uploadFile: function(imgFile, o) {
+                    // 图片上传后台地址
+                    var uploadUrl = CONFIG.uploadImgUrl;
+
+                    // 图片对象
+                    var imgXhr = new XMLHttpRequest();
+                    var img = {"name": imgFile.name, "size":imgFile.size, "percentComplete": 0, "xhr": imgXhr};
+
+                    var id = this.changeImg(img);
+                    // 上传视频
+                    util.uploadFileToUrl(imgXhr, imgFile, uploadUrl, 'normal',
+                        // 上传中
+                        function(evt) {
+                            $scope.$apply(function() {
+                                if (evt.lengthComputable) {
+                                    var percentComplete = Math.round(evt.loaded * 100 / evt.total);
+                                    // 更新上传进度
+                                    o.setPercentById('img', id, percentComplete);
+                                }
+                            });
+                        },
+
+                        // 上传成功
+                        function(xhr) {
+                            var ret = JSON.parse(xhr.responseText);
+                            console && console.log(ret);
+                            $scope.$apply(function(){
+                              o.setSrcSizeById('img', id, ret.upload_path, ret.size);
+                            });
+                            alert('图片上传成功');
+                        },
+                        // 上传失败
+                        function(xhr) {
+                            alert('图片上传失败，请重新上传');
+                            o.deleteById(id)
+                            xhr.abort();
+                        }
+                    );
+                }
+            }
+
+            // // 获取专题大片库列表
+            // self.getMovieTopicList = function() {
+            //     self.loading = true;
+            //     var data = JSON.stringify({
+            //         "token": util.getParams('token'),
+            //         "action": "getTopicLibList"
+            //     })
+            //     $http({
+            //         method: 'POST',
+            //         url: util.getApiUrl('movietopiclib', '', 'server'),
+            //         data: data
+            //     }).then(function successCallback(response) {
+            //         var msg = response.data;
+            //         console.log(msg)
+            //         if (msg.rescode == '200') {
+            //             self.movieTopciLibList = msg.data;
+            //         } else if (msg.rescode == "401") {
+            //             alert('访问超时，请重新登录');
+            //             $state.go('login');
+            //         } else {
+            //             alert(msg.rescode + ' ' + msg.errInfo);
+            //         }
+            //     }, function errorCallback(response) {
+            //         alert(response.status + ' 服务器出错');
+            //     }).finally(function(value) {
+            //         self.loading = false;
+            //     });
+            // }
+
+
+            // 获取专题片库信息
+            self.getMovieInfo = function () {
+                self.loading = true;
+                var data = JSON.stringify({
+                    "token": util.getParams('token'),
+                    "action": "getTopicLibList"
+                })
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('movietopiclib', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                        self.movieInfo = msg.data;
+                        // 和上传 图片 的 数据 结构一致
+                        var img = {};
+                        img.img = {};
+                        img.img.src = self.movieInfo[0].BG_PicURL_ABS;
+                        img.img.size = self.movieInfo[0].BG_PicSize;
+                        img.img.PicURL = self.movieInfo[0].BG_PicURL;
+                        img.img.IDName = self.movieInfo[0].IDName;
+                        img.img.Name = self.movieInfo[0].Name;
+                        self.uploadList.data = [img];
+                        // URL_ABS
+                        self.maskParams.URL_ABS = msg.data.URL_ABS;
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.loading = false;
+                });
+            }
+
+            // 保存专题片库信息
+            self.editMovieTopicLibInfo = function () {
+                self.saving = true;
+                var data = JSON.stringify({
+                    "action": "editTopicLib",
+                    "token": util.getParams('token'),
+                    "LibID": Number(self.maskParams.LibID),
+                    "data": {
+                        "Name": self.LibName,
+                        "BG_PicURL": self.MovieTopicLibInfo.PicURL,
+                        "BG_PicURL_ABS": self.MovieTopicLibInfo.src,
+                        "BG_PicSize": self.MovieTopicLibInfo.PicSize,
+                        "IDName": "DefaultTopic"
+                    }
+                })
+                $http({
+                    method: 'POST',
+                    url: util.getApiUrl('movietopiclib', '', 'server'),
+                    data: data
+                }).then(function successCallback(response) {
+                    var msg = response.data;
+                    if (msg.rescode == '200') {
+                        alert('编辑成功');
+                        // 电影id 变化，重新刷新页面
+                        $state.reload('app.editedList');
+                        self.cancel();
+                    } else if (msg.rescode == "401") {
+                        alert('访问超时，请重新登录');
+                        $state.go('login');
+                    } else {
+                        alert(msg.rescode + ' ' + msg.errInfo);
+                    }
+                }, function errorCallback(response) {
+                    alert(response.status + ' 服务器出错');
+                }).finally(function(value) {
+                    self.saving = false;
+                });
+            }
+        }
+    ]) 
+
+
 
     // 音乐库
     .controller('musicLiarbryController', ['$http', '$scope', '$state', '$filter', '$stateParams', 'NgTableParams', 'util',
