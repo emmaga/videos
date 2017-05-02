@@ -40,6 +40,7 @@
     </div>
     <hr class="break-space">
     <button ng-click="editedList.addMoreMovie()" class="btn btn-default">添加</button>
+    <button ng-show="editedList.video" ng-click="editedList.importMovie()" class="btn btn-default">导入影片</button>
     <button ng-show="editedList.MovieTopic" ng-click="editedList.editMovieTopicLibInfo()" class="btn btn-primary">编辑专题片库信息</button>
     <hr class="break-space">
     <table class="table table-hover table-condensed" ng-table="editedList.tableParams">
@@ -47,6 +48,7 @@
             <tr>
                 <th>序号</th>
                 <th>名称</th>
+                <th ng-show="editedList.MovieTopic">价格</th>
                 <th ng-show="editedList.video">类型</th>
                 <th ng-show="editedList.video">产地</th>
                 <th ng-show="editedList.video">操作</th>
@@ -59,6 +61,7 @@
                 <!-- <td data-title="'序号'" >{{movie}}</td> -->
                 <td data-title="'序号'" >{{movie.Seq}}</td>
                 <td data-title="'名称'" >{{movie.Name[editedList.defaultLang]}}</td>
+                <td ng-show="editedList.MovieTopic" data-title="'价格'" >{{movie.Price}}</td>
                 <td ng-show="editedList.video" data-title="'类型'" ><span ng-repeat="category in movie.CategoryName track by $index">{{category[editedList.defaultLang]}}</span> </td>
                 <td ng-show="editedList.video" data-title="'产地'" ><span ng-repeat="location in movie.LocationName track by $index">{{location[editedList.defaultLang]}}</span> </td>
                 <td data-title="'操作'">

@@ -774,6 +774,11 @@
                 $scope.app.maskParams = {LibID:self.stateParams.LibID};
             }
 
+            self.importMovie = function() {
+                $scope.app.maskUrl = "pages/addMoreMovieTopic.html";
+                $scope.app.maskParams = {LibID:self.stateParams.LibID, type: self.video ? 'video': 'topic'};
+            }
+
             // 删除已入库电影
             self.delMovie = function(id,video){
                  var flag = confirm('确定删除？');
@@ -1152,6 +1157,7 @@
                 var data = JSON.stringify({
                     "lang": "zh-CN",
                     "Seq": self.movieInfo.Seq,
+                    "Price": self.movieInfo.Price,
                     "token": util.getParams('token'),
                     "LibID": self.videoLibID,
                     "action": "add",
@@ -1166,7 +1172,6 @@
                         "PicSize": self.movieInfo.PicSize - 0,
                         "SearchName": self.movieInfo.SearchName,
                         "PicURL_ABS": self.uploadList.data[0].img.src,
-                        "Price": self.movieInfo.Price,
                         "Introduce": self.movieInfo.Introduce,
                         "Director": self.movieInfo.Director,
                         "MovieSize": self.maskParams.Size,
@@ -1629,12 +1634,15 @@
                     "LibID": Number(self.maskParams.LibID),
                     "action": "link",
                     "ID": self.selectMovie,
-                    "Seq": self.movieInfo.Seq
+                    "Seq": self.movieInfo.Seq,
+                    "Price": self.movieInfo.Price
                 })
+
+                var _url = self.maskParams.type === 'video' ? 'movielib' : 'movietopiclib'
 
                 $http({
                     method: 'POST',
-                    url: util.getApiUrl('movietopiclib', '', 'server'),
+                    url: util.getApiUrl(_url, '', 'server'),
                     data: data
                 }).then(function successCallback(response) {
                     var msg = response.data;
@@ -1656,7 +1664,7 @@
                 });
             }
         }
-    ]) 
+    ])
 
     .controller('editMovieInfoController', ['$http', '$scope', '$state', '$filter', '$stateParams', 'util', 'CONFIG',
         function($http, $scope, $state, $filter, $stateParams, util, CONFIG) {
