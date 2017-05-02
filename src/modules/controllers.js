@@ -1427,6 +1427,7 @@
                     "LibID": Number(self.maskParams.LibID),
                     "action": "add",
                     "Seq": self.movieInfo.Seq,
+                    "Price": self.movieInfo.Price,
                     "data": {
                         "PicSize": self.uploadList.data[0].img.size,
                         "Name": self.movieInfo.Name,
@@ -1438,7 +1439,6 @@
                         "Score": self.movieInfo.Score,
                         "SearchName": self.movieInfo.SearchName,
                         "Year": self.movieInfo.Year,
-                        "Price": self.movieInfo.Price,
                         "Introduce": self.movieInfo.Introduce,
                         "PicURL_ABS": self.uploadList.data[0].img.src,
                         "Category": self.catrgoryArr,
@@ -1873,6 +1873,7 @@
                     "ID": self.maskParams.movieID,
                     "LibID": Number(self.maskParams.LibID),
                     "Seq": self.movieInfo.Seq,
+                    "Price": self.movieInfo.Price,
                     "data": {
                         "Name": self.movieInfo.Name,
                         "PicSize": self.uploadList.data[0].img.size,
@@ -1884,7 +1885,6 @@
                         "Score": self.movieInfo.Score,
                         "SearchName": self.movieInfo.SearchName,
                         "Year": self.movieInfo.Year,
-                        "Price": self.movieInfo.Price,
                         "Introduce": self.movieInfo.Introduce,
                         "PicURL_ABS": self.uploadList.data[0].img.src,
                         "Category": self.catrgoryArr,
