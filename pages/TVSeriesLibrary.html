@@ -1,0 +1,79 @@
+<div ng-controller="TVSeriesController as TVSeries" ng-init="TVSeries.init()" class="col-sm-9 page col-right">
+    <a>
+        <strong>
+            <i class="glyphicon glyphicon-film"></i>
+            已入库
+        </strong>
+        <strong>{{TVSeries.LibName[TVSeries.defaultLang]}}</strong>
+    </a>
+    <hr>
+    
+    <!--搜索框-->
+    <div class="row">
+      <div class="col-lg-3 col-md-4">
+        <div class="input-group">
+          <input ng-model="TVSeries.tempWords" type="text" class="form-control" placeholder="请输入电视剧名称" />
+          <span class="input-group-btn">
+            <button class="btn btn-primary" ng-click="TVSeries.searchKeywords()" ng-disabled="TVSeries.loading" class="btn btn-primary">搜索</button>
+          </span>
+        </div><!-- /input-group -->
+      </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
+    <!--搜索框-->
+
+    <hr class="break-space">
+
+    <div class="form-group">
+        <label>类型</label><br>
+        <div ng-show="TVSeries.noCategotyData">查无数据</div>
+        <span ng-repeat="category in TVSeries.categoryList track by $index">
+            <input type="checkbox" ng-model="this.value" ng-click="TVSeries.chooseCateory(category.ID,this.value)" ng-disabled="TVSeries.loading"> {{category.CategoryName[TVSeries.defaultLang]}} 
+        </span>
+    </div>
+
+    <div class="form-group">
+        <label>产地</label><br>
+        <div ng-show="TVSeries.noLocationData">查无数据</div>
+        <span ng-repeat="location in TVSeries.locationList track by $index">
+            <input type="checkbox" ng-model="this.value" ng-click="TVSeries.chooseLocation(location.ID,this.value)" ng-disabled="TVSeries.loading"> {{location.LocationName[TVSeries.defaultLang]}} 
+        </span>
+    </div>
+    <hr class="break-space">
+    <button ng-click="TVSeries.addTV()" class="btn btn-default">添加</button>
+    <button ng-click="TVSeries.importTV()" class="btn btn-default">导入</button>
+    <hr class="break-space">
+    <table class="table table-hover table-condensed" ng-table="TVSeries.tableParams">
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>名称</th>
+                <th>类型</th>
+                <th>产地</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <div ng-show="TVSeries.loading">loading...</div>
+            <tr ng-repeat="series in $data track by $index">
+                <!-- <td data-title="'序号'" >{{series}}</td> -->
+                <td data-title="'序号'" >{{series.Seq}}</td>
+                <td data-title="'名称'" ><a ng-click="TVSeries.openEpisodeList(series.ID,series.Name[TVSeries.defaultLang])">{{series.Name[TVSeries.defaultLang]}}</a></td>
+                <td data-title="'类型'" ><span ng-repeat="category in series.CategoryName track by $index">{{category[TVSeries.defaultLang]}}</span> </td>
+                <td data-title="'产地'" ><span ng-repeat="location in series.LocationName track by $index">{{location[TVSeries.defaultLang]}}</span> </td>
+                <td data-title="'操作'">
+                    <button ng-click="TVSeries.editTVInfo(series.ID)" class="btn btn-xs btn-default" title="编辑">
+                        <i class="glyphicon glyphicon-pencil"></i>
+                    </button>
+                    <button ng-click="TVSeries.delTVSeries(series.ID)" class="btn btn-xs btn-default" title="删除">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </button>
+                    <button class="btn btn-xs btn-default" title="添加剧集" ng-click="TVSeries.addTVEpisode(series.ID, series.Name[TVSeries.defaultLang])">
+                        <i class="glyphicon glyphicon-plus"></i>
+                    </button>
+                    
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div ng-show="TVSeries.noData">查无数据</div>
+</div>

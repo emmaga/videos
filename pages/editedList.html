@@ -9,12 +9,12 @@
     <hr>
     
     <!--搜索框-->
-    <div class="row">
-      <div class="col-lg-3">
+    <div class="row" ng-show="editedList.video">
+      <div class="col-lg-3 col-md-4">
         <div class="input-group">
-          <input ng-model="editedList.keywords" type="text" class="form-control" placeholder="请输入视频名称" />
+          <input ng-model="editedList.tempWords" type="text" class="form-control" placeholder="请输入视频名称" />
           <span class="input-group-btn">
-            <button class="btn btn-primary" ng-click="editedList.getMovieList()" ng-disabled="editedList.loading" class="btn btn-primary">搜索</button>
+            <button class="btn btn-primary" ng-click="editedList.searchKeywords()" ng-disabled="editedList.loading" class="btn btn-primary">搜索</button>
           </span>
         </div><!-- /input-group -->
       </div><!-- /.col-lg-6 -->
@@ -58,7 +58,6 @@
         <tbody>
             <div ng-show="editedList.loading">loading...</div>
             <tr ng-repeat="movie in $data track by $index">
-                <!-- <td data-title="'序号'" >{{movie}}</td> -->
                 <td data-title="'序号'" >{{movie.Seq}}</td>
                 <td data-title="'名称'" >{{movie.Name[editedList.defaultLang]}}</td>
                 <td ng-show="editedList.MovieTopic" data-title="'价格'" >{{movie.Price}}</td>

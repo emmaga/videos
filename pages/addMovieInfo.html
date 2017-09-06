@@ -9,24 +9,21 @@
             </div>
             <form name="movieForm" novalidate ng-submit="movieForm.$valid && addMovieInfo.addMovie()">
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label>放入视频库</label>
-                            <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
-                            <span ng-repeat="videosLib in addMovieInfo.videosLibList track by $index">
-                                <input type="radio" name='videoLib' value='{{videosLib.ID}}' ng-model="addMovieInfo.videoLibID" >
-                                {{videosLib.Name[addMovieInfo.defaultLang]}}
-                            </span>
-                        </div>
-
-                        <hr>
-
-                        <div class="form-group" >
-                            <span ng-repeat="lang in addMovieInfo.editLangs track by $index">
-                                <label>名称-{{lang.name}}</label>
-                                <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Name[lang.code]" value="星际迷航" required>
-                            </span>
-                            
-                        </div>
+                    <div class="form-group">
+                        <label>放入视频库</label>
+                        <div ng-show="addMovieInfo.noCategotyData">查无数据</div>
+                        <span ng-repeat="videosLib in addMovieInfo.videosLibList track by $index">
+                            <input type="checkbox" name='videoLib' value='{{videosLib.ID}}' ng-model="videosLib.checked" ng-click="addMovieInfo.updataSelection(videosLib.checked, videosLib.ID)">
+                            {{videosLib.Name[addMovieInfo.defaultLang]}}
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="form-group" >
+                        <span ng-repeat="lang in addMovieInfo.editLangs track by $index">
+                            <label>名称-{{lang.name}}</label>
+                            <input type="text" class="form-control" ng-model="addMovieInfo.movieInfo.Name[lang.code]" value="星际迷航" required>
+                        </span>
+                    </div>
                    
                         <hr>
                         <div class="form-group">
@@ -45,7 +42,7 @@
                         <hr>
                         <div class="form-group">
                             <label>封面</label><br>
-                               <input type="file" file-model="myCoverImg" data-e="none" required><br>
+                               <input type="file" accept="image/*" file-model="myCoverImg" data-e="none" required><br>
                                <div ng-repeat="img in addMovieInfo.uploadList.data">
                                 <img width="100%" src="{{img.img.src}}">
                                 上传进度：{{img.img.percentComplete}}  

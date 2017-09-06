@@ -1,0 +1,37 @@
+<div class="modal"  ng-controller="episodeListController as episodeList" ng-init="episodeList.init()">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="episodeList.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">剧集列表 - {{ episodeList.maskParams.SeriesName }}</h4>
+            </div>
+            <table class="table table-hover table-condensed" ng-table="episodeList.tableParams">
+                <thead>
+                    <tr>
+                        <th>集数</th>
+                        <th>时长</th>
+                        <th>大小</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <div ng-show="episodeList.loading">loading...</div>
+                    <tr ng-repeat="episode in $data | orderBy: episode.Episode track by $index">
+                        <td data-title="'集数'" >{{episode.Episode}}</td>
+                        <td data-title="'时长'" >{{episode.Duration}}</td>
+                        <td data-title="'大小'" >{{episode.Size}}</td>
+                        <td data-title="'操作'">
+                            <button ng-click="episodeList.editEpisode(episode.Episode,episodeList.maskParams.SeriesName)" class="btn btn-xs btn-default" title="编辑">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                            </button>
+                            <button ng-click="episodeList.delEpisode(episode.Episode)" class="btn btn-xs btn-default" title="删除">
+                                <i class="glyphicon glyphicon-remove"></i>
+                            </button>                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div ng-show="episodeList.noData">查无数据</div>
+        </div>
+    </div>
+</div>

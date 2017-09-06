@@ -23,7 +23,9 @@
     }])
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider
+            .when('/app', '/app/uploadList') //app重定向到上传模块
+            .otherwise('/login');
         $stateProvider
             .state('login', {
                 url: '/login',
@@ -32,6 +34,10 @@
             .state('app', {
                 url: '/app',
                 templateUrl: 'pages/app.html'
+            })
+            .state('app.uploadList', {
+                url: '/uploadList',
+                templateUrl: 'pages/uploadList.html'
             })
             .state('app.transcodingList', {
                 url: '/transcodingList',
@@ -48,6 +54,10 @@
             .state('app.musicLibrary', {
                 url: '/musicLibrary?LibID',
                 templateUrl: 'pages/musicLibrary.html'
+            })
+            .state('app.TVSeriesLibrary', {
+                url: '/TVSeriesLibrary?LibID',
+                templateUrl: 'pages/TVSeriesLibrary.html'
             })
     }])
 

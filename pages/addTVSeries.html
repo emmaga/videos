@@ -1,0 +1,113 @@
+<!--fix my css-->
+<div class="modal"  ng-controller="addTVSeriesController as aTS" ng-init="aTS.init()">
+    <div class="modal-backdrop in"></div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button ng-click="aTS.cancel()" type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">添加电视剧</h4>
+            </div>
+            <form name="TVForm" novalidate ng-submit="TVForm.$valid && aTS.submitAddTV()">
+                <div class="modal-body">
+                    <div class="form-group" >
+                        <span ng-repeat="lang in aTS.editLangs track by $index">
+                            <label>名称-{{lang.name}}</label>
+                            <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.Name[lang.code]" required>
+                        </span>          
+                    </div>  
+                    <hr>
+                    <div class="form-group">
+                        <label>类型</label>
+                        <div ng-show="aTS.noCategotyData">查无数据</div>
+                        <span ng-repeat="category in aTS.categoryList track by $index">
+                            <input type="checkbox" ng-model="this.value" ng-click="aTS.chooseCateory(category.ID,this.value)" > {{category.CategoryName[aTS.defaultLang]}} 
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>产地</label>
+                        <div ng-show="aTS.noLocationData">查无数据</div>
+                        <span ng-repeat="location in aTS.locationList track by $index"><input type="checkbox"   ng-model="this.value" ng-click="aTS.chooseLocation(location.ID,this.value)" > {{location.LocationName[aTS.defaultLang]}}</span> 
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>封面</label><br>
+                            <input type="file" accept="image/*" file-model="myCoverImg" data-e="none" required><br>
+                            <div ng-repeat="img in aTS.uploadList.data">
+                            <img width="100%" src="{{img.img.src}}">
+                            上传进度：{{img.img.percentComplete}} % 
+                            </div>
+                        <hr class="break-space">
+                        <div ng-click="aTS.addCoverImg()" class="btn btn-primary">上传</div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <span ng-repeat="lang in aTS.editLangs track by $index">
+                            <label>导演-{{lang.name}}</label>
+                            <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.Director[lang.code]" required>
+                        </span>
+                    </div> 
+                    <hr>
+                    <div class="form-group">
+                        <span ng-repeat="lang in aTS.editLangs track by $index">
+                            <label>编剧-{{lang.name}}</label>
+                            <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.ScreenWriter[lang.code]" required>
+                        </span>
+                    </div> 
+                    <hr>
+                    <div class="form-group">
+                        <span ng-repeat="lang in aTS.editLangs track by $index">
+                            <label>演员-{{lang.name}}</label>
+                            <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.Actor[lang.code]" required>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <span ng-repeat="lang in aTS.editLangs track by $index">
+                            <label>简介-{{lang.name}}</label>
+                            <textarea style="height: 150px;" type="text" ng-model="aTS.TVSeriesInfo.Introduction[lang.code]" class="form-control" required></textarea>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <span ng-repeat="lang in aTS.editLangs track by $index">
+                            <label>语言-{{lang.name}}</label>
+                            <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.Language[lang.code]" required>
+                        </span>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>上映年份</label>
+                        <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.Year" required>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>评分（总分10分，精确到一位小数，例如：9.7）</label>
+                        <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.Score" required>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>总集数</label>
+                        <input type="text" class="form-control" ng-model="aTS.TVSeriesInfo.TotalEpisode" required>
+                    </div>
+                    <hr>                   
+                    <div class="form-group">
+                        <label>价格</label>
+                        <input type="number" class="form-control" ng-model="aTS.TVSeriesInfo.Price" required>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>排序</label>
+                        <input type="number" class="form-control" ng-model="aTS.TVSeriesInfo.Seq" required>
+                    </div>
+                    <hr>
+                </div>
+                <div class="modal-footer">
+                    <a ng-click="aTS.cancel()" class="btn">取消</a>
+                    <button class="btn btn-primary" type="submit" ng-disabled="TVForm.$invalid || aTS.saving ">添加</button>
+                </div>
+            </form>  
+        </div>
+    </div>
+
+</div>
