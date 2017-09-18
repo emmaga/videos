@@ -1550,6 +1550,7 @@
                 uploadFile: function(imgFile, o) {
                     // 图片上传后台地址
                     var uploadUrl = CONFIG.uploadImgUrl;
+                    console.log('图片上传地址' + uploadUrl)
 
                     // 图片对象
                     var imgXhr = new XMLHttpRequest();

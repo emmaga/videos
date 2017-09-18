@@ -63,12 +63,15 @@
 
 
     .constant('CONFIG', {
-        // serverUrl: 'http://movies.clearidc.com/backend_movie/v1/',
+        serverUrl: 'http://movies.clearidc.com/backend_movie/v1/',
         // 张舰自己起的服务器
         // serverUrl: 'http://192.168.17.132/backend_movie/v1/',
-        serverUrl: 'http://192.168.30.101/backend_movie/v1/',
-        uploadImgUrl: 'http://mres.cleartv.cn/upload',
-        uploadVideoUrl: 'http://movies.clearidc.com/upload',
+        // serverUrl: 'http://192.168.30.101/backend_movie/v1/',
+        // serverUrl: 'http://172.17.173.101/backend_movie/v1/',
+        // uploadImgUrl: 'http://172.17.173.101/upload',
+        uploadImgUrl: 'http://mres.cleartv.cn/default',
+        // uploadVideoUrl: 'http://172.17.173.101/videoupload',
+        uploadVideoUrl: 'http://vodresource.cleartv.cn/movies',
         testUrl: 'test/',
         test: false
     })
