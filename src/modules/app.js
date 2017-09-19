@@ -23,7 +23,9 @@
     }])
 
     .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('/login');
+        $urlRouterProvider
+            .when('/app', '/app/uploadList') //app重定向到上传模块
+            .otherwise('/login');
         $stateProvider
             .state('login', {
                 url: '/login',
@@ -32,6 +34,10 @@
             .state('app', {
                 url: '/app',
                 templateUrl: 'pages/app.html'
+            })
+            .state('app.uploadList', {
+                url: '/uploadList',
+                templateUrl: 'pages/uploadList.html'
             })
             .state('app.transcodingList', {
                 url: '/transcodingList',
@@ -49,16 +55,23 @@
                 url: '/musicLibrary?LibID',
                 templateUrl: 'pages/musicLibrary.html'
             })
+            .state('app.TVSeriesLibrary', {
+                url: '/TVSeriesLibrary?LibID',
+                templateUrl: 'pages/TVSeriesLibrary.html'
+            })
     }])
 
 
     .constant('CONFIG', {
-        // serverUrl: 'http://movies.clearidc.com/backend_movie/v1/',
+        serverUrl: 'http://movies.clearidc.com/backend_movie/v1/',
         // 张舰自己起的服务器
         // serverUrl: 'http://192.168.17.132/backend_movie/v1/',
-        serverUrl: 'http://192.168.30.101/backend_movie/v1/',
-        uploadImgUrl: 'http://mres.cleartv.cn/upload',
-        uploadVideoUrl: 'http://movies.clearidc.com/upload',
+        // serverUrl: 'http://192.168.30.101/backend_movie/v1/',
+        // serverUrl: 'http://172.17.173.101/backend_movie/v1/',
+        // uploadImgUrl: 'http://172.17.173.101/upload',
+        uploadImgUrl: 'http://mres.cleartv.cn/default',
+        // uploadVideoUrl: 'http://172.17.173.101/videoupload',
+        uploadVideoUrl: 'http://vodresource.cleartv.cn/movies',
         testUrl: 'test/',
         test: false
     })
